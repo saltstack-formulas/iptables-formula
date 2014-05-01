@@ -1,0 +1,11 @@
+firewall:
+  install: True
+  enabled: True
+  strict: True
+  services:
+    ssh:
+      block_nomatch: False
+      ips_allow:
+        - 192.168.0.0/24
+        - 10.0.2.2/32
+
