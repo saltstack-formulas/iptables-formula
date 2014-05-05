@@ -10,8 +10,8 @@
   test.fail_with_changes:
     - name: {{sls_params.parent}}
 
-{%- if salt['pillar.get']("{parent}:firewall"|format(parent=parent)) %}
-{% set pfirewall = salt['pillar.get']("{parent}:firewall"|format(parent=parent)) %}
+{%- if salt['pillar.get']("{parent}:firewall"|format(parent=sls_params.parent)) %}
+{% set pfirewall = salt['pillar.get']("{parent}:firewall"|format(parent=sls_params.parent)) %}
 .test:
   test.configurable_test_state:
     - name: {{sls_params.parent}}
