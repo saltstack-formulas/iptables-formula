@@ -15,7 +15,7 @@
     - name: {{sls_params.parent}}
     - changes: True
     - result: False
-    - comment: {{ salt['pillar.get']("{parent}:firewall"|format(parent=sls_params.parent))|pprint() }}
+    - comment: {{ "{parent}:firewall"|format(parent=sls_params.parent) }}
 
 
 {%- if salt['pillar.get']("{parent}:firewall"|format(parent=sls_params.parent)) %}
