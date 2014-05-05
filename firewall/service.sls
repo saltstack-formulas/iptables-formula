@@ -15,11 +15,11 @@
     - name: {{sls_params.parent}}
     - changes: True
     - result: False
-    - comment: {{ "{parent}:firewall"|format(parent=sls_params.parent) }}
+    - comment: {{ "%s:firewall"|format(sls_params.parent) }}
 
 
-{%- if salt['pillar.get']("{parent}:firewall"|format(parent=sls_params.parent)) %}
-{% set pfirewall = salt['pillar.get']("{parent}:firewall"|format(parent=sls_params.parent)) %}
+{%- if salt['pillar.get']("%s:firewall"|format(sls_params.parent)) %}
+{% set pfirewall = salt['pillar.get']("%s:firewall"|format(sls_params.parent)) %}
 # Firewall management module
 {%- if salt['pillar.get']('firewall:enabled') %}
   {% set firewall = salt['pillar.get']('firewall', {}) %}
