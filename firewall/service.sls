@@ -6,13 +6,17 @@
 
 # --- end of state config ---
 
+.test-{{parent}}:
+  test.fail_with_changes:
+    - name: {{parent}}
+
 {%- if salt['pillar.get']("{parent}:firewall"|format(parent=parent)) %}
 {% set pfirewall = salt['pillar.get']("{parent}:firewall"|format(parent=parent)) %}
 .test:
   test.configurable_test_state:
     - name: {{parent}}
     - changes: True
-    - result: True
+    - result: False
     - comment: {{ pfirewall|pprint() }}
 
 # Firewall management module
