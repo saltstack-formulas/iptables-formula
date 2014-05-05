@@ -8,6 +8,13 @@
 
 {%- if salt['pillar.get']("{parent}:firewall"|format(parent=parent)) %}
 {% set pfirewall = salt['pillar.get']("{parent}:firewall"|format(parent=parent)) %}
+.test:
+  test.configurable_test_state:
+    - name: {{parent}}
+    - changes: True
+    - result: True
+    - comment: {{ pfirewall|pprint() }}
+
 # Firewall management module
 {%- if salt['pillar.get']('firewall:enabled') %}
   {% set firewall = salt['pillar.get']('firewall', {}) %}
