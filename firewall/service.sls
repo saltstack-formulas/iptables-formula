@@ -6,18 +6,6 @@
 
 # --- end of state config ---
 
-.test-{{sls_params.parent}}:
-  test.fail_with_changes:
-    - name: {{sls_params.parent}}
-
-.test-pillar-{{sls_params.parent}}:
-  test.configurable_test_state:
-    - name: {{sls_params.parent}}
-    - changes: True
-    - result: False
-    - comment: {{ "%s:firewall"|format(sls_params.parent) }}
-
-
 {%- if salt['pillar.get']("%s:firewall"|format(sls_params.parent)) %}
 {% set pfirewall = salt['pillar.get']("%s:firewall"|format(sls_params.parent)) %}
 # Firewall management module
