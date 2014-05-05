@@ -6,15 +6,15 @@
 
 # --- end of state config ---
 
-.test-{{parent}}:
+.test-{{sls_params.parent}}:
   test.fail_with_changes:
-    - name: {{parent}}
+    - name: {{sls_params.parent}}
 
 {%- if salt['pillar.get']("{parent}:firewall"|format(parent=parent)) %}
 {% set pfirewall = salt['pillar.get']("{parent}:firewall"|format(parent=parent)) %}
 .test:
   test.configurable_test_state:
-    - name: {{parent}}
+    - name: {{sls_params.parent}}
     - changes: True
     - result: False
     - comment: {{ pfirewall|pprint() }}
@@ -32,7 +32,7 @@
 
     # Allow rules for ips/subnets
     {%- for ip in service_details.get('ips_allow',{}) %}
-.iptables_{{parent}}_{{service_name}}_allow_{{ip}}:
+.iptables_{{sls_params.parent}}_{{service_name}}_allow_{{ip}}:
   iptables.append:
     - table: filter
     - chain: INPUT
@@ -45,7 +45,7 @@
 
     {%- if not strict_mode and global_block_nomatch or block_nomatch %}
 # If strict mode is disabled we may want to block anything else
-.iptables_{{parent}}_{{service_name}}_deny_other:
+.iptables_{{sls_params.parent}}_{{service_name}}_deny_other:
   iptables.append:
     - position: last
     - table: filter
