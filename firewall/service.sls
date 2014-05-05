@@ -1,4 +1,10 @@
-{% if parent is defined %}
+#!stateconf yaml . jinja
+
+.sls_params:
+  stateconf.set:
+    - parent: default
+
+# --- end of state config ---
 
 {%- if salt['pillar.get']("{parent}:firewall"|format(parent=parent)) %}
 {% set pfirewall = salt['pillar.get']("{parent}:firewall"|format(parent=parent)) %}
@@ -15,7 +21,7 @@
 
     # Allow rules for ips/subnets
     {%- for ip in service_details.get('ips_allow',{}) %}
-iptables_{{parent}}_{{service_name}}_allow_{{ip}}:
+.iptables_{{parent}}_{{service_name}}_allow_{{ip}}:
   iptables.append:
     - table: filter
     - chain: INPUT
@@ -28,7 +34,7 @@ iptables_{{parent}}_{{service_name}}_allow_{{ip}}:
 
     {%- if not strict_mode and global_block_nomatch or block_nomatch %}
 # If strict mode is disabled we may want to block anything else
-iptables_{{parent}}_{{service_name}}_deny_other:
+.iptables_{{parent}}_{{service_name}}_deny_other:
   iptables.append:
     - position: last
     - table: filter
