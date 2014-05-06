@@ -65,6 +65,7 @@
           - source: {{ ip }}
           - dport: {{ service_name }}
           - proto: tcp
+          - comment: {{service_name}}_allow_{{ip}}
           - save: True
     {%- endfor %}
 

@@ -29,6 +29,7 @@
     - source: {{ ip }}
     - dport: {{ service_name }}
     - proto: tcp
+    - comment: {{sls_params.parent}}_{{service_name}}_allow_{{ip}}
     - save: True
     {%- endfor %}
 
