@@ -4,14 +4,19 @@
   {% set install = firewall.get('install', False) %}
   {% set strict_mode = firewall.get('strict', False) %}
   {% set global_block_nomatch = firewall.get('block_nomatch', False) %}
-  
+  {% set packages = salt['grains.filter_by']({
+    'Debian': ['iptables', 'iptables-persistent'],
+    'RedHat': ['iptables'],
+    'default': 'Debian'}) %}
+
       {%- if install %}
       # Install required packages for firewalling      
       iptables_packages:
         pkg.installed:
           - pkgs:
-            - iptables
-            - iptables-persistent
+            {%- for pkg in packages %}
+            - {{pkg}}
+            {%- endfor %}
       {%- endif %}
 
     {%- if strict_mode %}
@@ -60,6 +65,7 @@
           - source: {{ ip }}
           - dport: {{ service_name }}
           - proto: tcp
+          - comment: {{service_name}}_allow_{{ip}}
           - save: True
     {%- endfor %}
 
