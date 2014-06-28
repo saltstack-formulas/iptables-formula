@@ -68,4 +68,18 @@ extend:
       - parent: otherservice
 ```
 
+Using iptables.nat
+==================
 
+You can use nat for interface.
+
+```
+#!stateconf yaml . jinja
+
+# iptables -t nat -A POSTROUTING -o eth0 -s 192.168.18.0/24 -j MASQUERADE
+
+  nat:
+    eth0:
+      ips_allow:
+        - 192.168.18.0/24
+```
