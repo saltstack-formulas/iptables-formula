@@ -8,4 +8,9 @@ firewall:
       ips_allow:
         - 192.168.0.0/24
         - 10.0.2.2/32
-
+  #Suppport nat
+  # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.18.0/24 -j MASQUERADE
+  nat:
+    eth0:
+      ips_allow:
+        - 192.168.18.0/24
