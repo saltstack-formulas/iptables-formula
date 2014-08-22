@@ -83,6 +83,8 @@
     {%- endif %}    
 
   {%- endfor %}
+
+  # Generate rules for NAT
   {%- for service_name, service_details in firewall.get('nat', {}).items() %}  
     {% set dest_ip = service_details.get('dest_iface', {})|default(False) %}
     {%- for ip in service_details.get('ips_allow',{}) %}
@@ -96,4 +98,18 @@
           - save: True
     {%- endfor %}
   {%- endfor %}
+
+  # Generate rules for whitelisting IP classes
+  {%- for service_name, service_details in firewall.get('whitelist', {}).items() %}
+    {%- for ip in service_details.get('ips_allow',{}) %}
+      iptables_{{service_name}}_allow_{{ip}}:
+        iptables.append:
+           - table: filter
+           - chain: INPUT
+           - jump: ACCEPT
+           - source: {{ ip }}
+           - save: True
+    {%- endfor %}
+  {%- endfor %}
+
 {%- endif %}
