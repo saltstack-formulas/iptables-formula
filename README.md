@@ -32,6 +32,15 @@ firewall:
         - 10.0.2.2/32
 ```
 
+Allow an entire class such as your internal network:
+
+```
+  whitelist:
+    networks:
+      ips_allow:
+        - 10.0.0.0/8
+```
+
 Salt combines both and effectively enables your firewall and applies the rules.
 
 Notes:
