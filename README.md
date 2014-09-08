@@ -1,5 +1,5 @@
-firewall-formula
-========
+iptables-formula
+================
 
 This module manages your firewall using iptables with pillar configured rules. 
 Thanks to the nature of Pillars it is possible to write global and local settings (e.g. enable globally, configure locally)
