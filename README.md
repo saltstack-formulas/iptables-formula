@@ -58,10 +58,11 @@ Salt can't merge pillars, so you can only define `firewall:services` in once pla
 ```
 otherservice:
   firewall:
-    http:
-      block_nomatch: False
-      ips_allow:
-        - 0.0.0.0/0
+    services:
+      http:
+        block_nomatch: False
+        ips_allow:
+          - 0.0.0.0/0
 ```
 
 `states/otherservice.sls`
@@ -69,10 +70,10 @@ otherservice:
 #!stateconf yaml . jinja
 
 include:
-  - firewall.service
+  - iptables.service
 
 extend:
-  firewall.service::sls_params:
+  iptables.service::sls_params:
     stateconf.set:
       - parent: otherservice
 ```
