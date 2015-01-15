@@ -18,6 +18,7 @@
   # Generate ipsets for all services that we have information about
   {%- for service_name, service_details in pfirewall.get('services', {}).items() %}  
     {% set block_nomatch = service_details.get('block_nomatch', False) %}
+    {% set proto = service_details.get('proto', 'tcp') %}
 
     # Allow rules for ips/subnets
     {%- for ip in service_details.get('ips_allow',{}) %}
@@ -28,7 +29,7 @@
     - jump: ACCEPT
     - source: {{ ip }}
     - dport: {{ service_name }}
-    - proto: tcp
+    - proto: {{ proto }}
     - save: True
     {%- endfor %}
 
@@ -41,7 +42,7 @@
     - chain: INPUT
     - jump: REJECT
     - dport: {{ service_name }}
-    - proto: tcp
+    - proto: {{ proto }}
     - save: True
     {%- endif %}    
 
