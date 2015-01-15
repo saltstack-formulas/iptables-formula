@@ -59,43 +59,47 @@
     {%- set proto = service_details.get('proto','tcp') %}
     {%- set mark  = service_details.get('mark','0x64') %}
 
-  # Allow rules for ips/subnets
-    iptables_{{service_name}}_allow_{{ip}}_mark:
-      iptables.append:
-        - table: filter
-        - chain: INPUT
-        - jump: ACCEPT
-        - source: {{ ip }}
-        - dport: {{ to }}
-        - proto: {{ proto }}
-        - match:
-          - state
-          - mark
-        - connstate: NEW
-        - mark: '{{ mark }}'
-        - save: True
-
-    iptables_{{service_name}}_mangle_{{proto}}_{{from}}_{{to}}:
-      iptables.append:
-        - table: mangle
-        - chain: PREROUTING
-        - jump: MARK
-        - proto: {{ proto }}
-        - dport: {{ from }}
-        - set-xmark: '{{ mark }}/0xffffffff'
-        - save: True
-
-    iptables_{{service_name}}_nat_{{proto}}_{{from}}_{{to}}:
-      iptables.append:
-        - table: nat
-        - chain: PREROUTING
-        - jump: DNAT
-        - proto: {{ proto }}
-        - dport: {{ from }}
-        - match: mark
-        - mark: '{{ mark }}'
-        - to-destination: ':{{ to }}'
-        - save: True
+    {%- for ip in service_details.get('ips_allow',{'0/0':[]}) %}
+      # Allow rules for ips/subnets
+      iptables_{{service_name}}_allow_{{ip}}_mark:
+        iptables.append:
+          - table: filter
+          - chain: INPUT
+          - jump: ACCEPT
+          - source: {{ ip }}
+          - dport: {{ to }}
+          - proto: {{ proto }}
+          - match:
+            - state
+            - mark
+          - connstate: NEW
+          - mark: '{{ mark }}'
+          - save: True
+  
+      iptables_{{service_name}}_mangle_{{proto}}_{{from}}_{{to}}:
+        iptables.append:
+          - table: mangle
+          - chain: PREROUTING
+          - jump: MARK
+          - source: {{ ip }}
+          - proto: {{ proto }}
+          - dport: {{ from }}
+          - set-xmark: '{{ mark }}/0xffffffff'
+          - save: True
+  
+      iptables_{{service_name}}_nat_{{proto}}_{{from}}_{{to}}:
+        iptables.append:
+          - table: nat
+          - chain: PREROUTING
+          - jump: DNAT
+          - source: {{ ip }}
+          - proto: {{ proto }}
+          - dport: {{ from }}
+          - match: mark
+          - mark: '{{ mark }}'
+          - to-destination: ':{{ to }}'
+          - save: True
+    {%- endfor %}
   {%- endfor %}
 
   # Generate ipsets for all services that we have information about
