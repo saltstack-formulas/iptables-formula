@@ -58,6 +58,7 @@
     {%- set to    = service_details.get('to_port','') %}
     {%- set proto = service_details.get('proto','tcp') %}
     {%- set mark  = service_details.get('mark','0x64') %}
+    {%- set mask  = service_details.get('mask','0xffffffff') %}
 
     {%- for ip in service_details.get('ips_allow',{'0/0':[]}) %}
       # Allow rules for ips/subnets
@@ -75,17 +76,12 @@
           - connstate: NEW
           - mark: '{{ mark }}'
           - save: True
-  
+
+      # --set-xmark is being placed before the jump when using .append, which doesn't work.
       iptables_{{service_name}}_mangle_{{proto}}_{{from}}_{{to}}:
-        iptables.append:
-          - table: mangle
-          - chain: PREROUTING
-          - jump: MARK
-          - source: {{ ip }}
-          - proto: {{ proto }}
-          - dport: {{ from }}
-          - set-xmark: '{{ mark }}/0xffffffff'
-          - save: True
+        cmd.run:
+          - name: /sbin/iptables -t mangle -A PREROUTING -p {{ proto }} -m {{ proto }} --dport {{ from }} -j MARK --set-xmark {{ mark }}/{{ mask }}
+          - unless: /sbin/iptables -t mangle -C PREROUTING -p {{ proto }} -m {{ proto }} --dport {{ from }} -j MARK --set-xmark {{ mark }}/{{ mask }}
   
       iptables_{{service_name}}_nat_{{proto}}_{{from}}_{{to}}:
         iptables.append:
