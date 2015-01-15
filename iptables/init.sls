@@ -96,7 +96,6 @@
         - mark: '{{ mark }}'
         - to-destination: ':{{ to }}'
         - save: True
-    {%- endfor %}
   {%- endfor %}
 
   # Generate ipsets for all services that we have information about
