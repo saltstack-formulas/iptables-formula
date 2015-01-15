@@ -10,7 +10,7 @@
     'default': 'Debian'}) %}
 
       {%- if install %}
-      # Install required packages for firewalling      
+      # Install required packages for firewalling
       iptables_packages:
         pkg.installed:
           - pkgs:
@@ -20,7 +20,7 @@
       {%- endif %}
 
     {%- if strict_mode %}
-      # If the firewall is set to strict mode, we'll need to allow some 
+      # If the firewall is set to strict mode, we'll need to allow some
       # that always need access to anything
       iptables_allow_localhost:
         iptables.append:
@@ -38,7 +38,7 @@
           - jump: ACCEPT
           - match: conntrack
           - ctstate: 'RELATED,ESTABLISHED'
-          - save: True            
+          - save: True
 
       # Set the policy to deny everything unless defined
       enable_reject_policy:
@@ -51,8 +51,56 @@
             - iptables: iptables_allow_established
     {%- endif %}
 
+  # Generate rules for redirect
+  # Do these first because the filter rule needs to come first
+  {%- for service_name, service_details in firewall.get('redirect', {}).items() %}
+    {%- set from  = service_details.get('from_port','') %}
+    {%- set to    = service_details.get('to_port','') %}
+    {%- set proto = service_details.get('proto','tcp') %}
+    {%- set mark  = service_details.get('mark','0x64') %}
+
+  # Allow rules for ips/subnets
+    iptables_{{service_name}}_allow_{{ip}}_mark:
+      iptables.append:
+        - table: filter
+        - chain: INPUT
+        - jump: ACCEPT
+        - source: {{ ip }}
+        - dport: {{ to }}
+        - proto: {{ proto }}
+        - match:
+          - state
+          - mark
+        - connstate: NEW
+        - mark: '{{ mark }}'
+        - save: True
+
+    iptables_{{service_name}}_mangle_{{proto}}_{{from}}_{{to}}:
+      iptables.append:
+        - table: mangle
+        - chain: PREROUTING
+        - jump: MARK
+        - proto: {{ proto }}
+        - dport: {{ from }}
+        - set-xmark: '{{ mark }}/0xffffffff'
+        - save: True
+
+    iptables_{{service_name}}_nat_{{proto}}_{{from}}_{{to}}:
+      iptables.append:
+        - table: nat
+        - chain: PREROUTING
+        - jump: DNAT
+        - proto: {{ proto }}
+        - dport: {{ from }}
+        - match: mark
+        - mark: '{{ mark }}'
+        - to-destination: ':{{ to }}'
+        - save: True
+    {%- endfor %}
+  {%- endfor %}
+
   # Generate ipsets for all services that we have information about
-  {%- for service_name, service_details in firewall.get('services', {}).items() %}  
+  {%- for service_name, service_details in firewall.get('services', {}).items() %}
     {% set block_nomatch = service_details.get('block_nomatch', False) %}
     {% set proto = service_details.get('proto', 'tcp') %}
 
@@ -81,19 +129,19 @@
           - dport: {{ service_name }}
           - proto: {{ proto }}
           - save: True
-    {%- endif %}    
+    {%- endif %}
 
   {%- endfor %}
 
   # Generate rules for NAT
-  {%- for service_name, service_details in firewall.get('nat', {}).items() %}  
+  {%- for service_name, service_details in firewall.get('nat', {}).items() %}
     {%- for ip_s, ip_d in service_details.get('rules', {}).items() %}
       iptables_{{service_name}}_allow_{{ip_s}}_{{ip_d}}:
         iptables.append:
-          - table: nat 
-          - chain: POSTROUTING 
+          - table: nat
+          - chain: POSTROUTING
           - jump: MASQUERADE
-          - o: {{ service_name }} 
+          - o: {{ service_name }}
           - source: {{ ip_s }}
           - destination: {{ip_d}}
           - save: True

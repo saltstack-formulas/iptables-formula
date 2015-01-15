@@ -41,6 +41,17 @@ Allow an entire class such as your internal network:
         - 10.0.0.0/8
 ```
 
+Redirect one port to another on the same host
+
+```
+  redirect:
+    ssh:
+      from: 22
+      to: 29418
+      proto: tcp
+      mark: 0x64
+```
+
 Salt combines both and effectively enables your firewall and applies the rules.
 
 Notes:
