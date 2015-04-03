@@ -1,13 +1,14 @@
 # Firewall management module
+{% set packages = salt['grains.filter_by']({
+    'Debian': ['iptables', 'iptables-persistent'],
+    'RedHat': ['iptables'],
+    'default': 'Debian'}) %}
+
 {%- if salt['pillar.get']('firewall:enabled') %}
   {% set firewall = salt['pillar.get']('firewall', {}) %}
   {% set install = firewall.get('install', False) %}
   {% set strict_mode = firewall.get('strict', False) %}
   {% set global_block_nomatch = firewall.get('block_nomatch', False) %}
-  {% set packages = salt['grains.filter_by']({
-    'Debian': ['iptables', 'iptables-persistent'],
-    'RedHat': ['iptables'],
-    'default': 'Debian'}) %}
 
       {%- if install %}
       # Install required packages for firewalling      
@@ -112,4 +113,15 @@
     {%- endfor %}
   {%- endfor %}
 
+{%- else %}  
+# if we don't find pillar 'firewall:enabled' then the iptables service should be disabled
+
+  {%- for pkg in packages %}
+  disable_{{pkg}}_service:
+    service:
+      - name: {{pkg}}
+      - dead
+      - enable: False
+  {%- endfor %}
+  
 {%- endif %}
