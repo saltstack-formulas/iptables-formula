@@ -4,13 +4,16 @@
     'RedHat': ['iptables'],
     'default': 'Debian'}) %}
 
-{%- if salt['pillar.get']('firewall:enabled') %}
+# we always want to default to firewall enabled (True) unless explicitly disabled (False)
+{% set firewall_enabled = salt['pillar.get']('firewall:enabled', True) %}
+
+{%- if firewall_enabled %}
   {% set firewall = salt['pillar.get']('firewall', {}) %}
   {% set install = firewall.get('install', False) %}
   {% set strict_mode = firewall.get('strict', False) %}
   {% set global_block_nomatch = firewall.get('block_nomatch', False) %}
 
-      {%- if install %}
+    {%- if install %}
       # Install required packages for firewalling      
       iptables_packages:
         pkg.installed:
@@ -18,7 +21,7 @@
             {%- for pkg in packages %}
             - {{pkg}}
             {%- endfor %}
-      {%- endif %}
+    {%- endif %}
 
     {%- if strict_mode %}
       # If the firewall is set to strict mode, we'll need to allow some 
@@ -113,14 +116,21 @@
     {%- endfor %}
   {%- endfor %}
 
+  # enable iptables service(s) 
+  {%- for pkg in packages %}
+      enable_{{pkg}}_service:
+        service.running:
+          - name: {{pkg}}
+          - enable: True
+  {%- endfor %}
+  
 {%- else %}  
-# if we don't find pillar 'firewall:enabled' then the iptables service should be disabled
 
+  # disable iptables service(s) 
   {%- for pkg in packages %}
   disable_{{pkg}}_service:
-    service:
+    service.dead:
       - name: {{pkg}}
-      - dead
       - enable: False
   {%- endfor %}
   
