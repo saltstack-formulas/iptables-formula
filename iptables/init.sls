@@ -9,7 +9,7 @@
     'RedHat': ['iptables'],
     'default': 'Debian'}) %}
 
-      {%- if install %}
+    {%- if install %}
       # Install required packages for firewalling      
       iptables_packages:
         pkg.installed:
@@ -17,7 +17,7 @@
             {%- for pkg in packages %}
             - {{pkg}}
             {%- endfor %}
-      {%- endif %}
+    {%- endif %}
 
     {%- if strict_mode %}
       # If the firewall is set to strict mode, we'll need to allow some 
@@ -54,32 +54,72 @@
   # Generate ipsets for all services that we have information about
   {%- for service_name, service_details in firewall.get('services', {}).items() %}  
     {% set block_nomatch = service_details.get('block_nomatch', False) %}
+    {% set interfaces = service_details.get('interfaces','') %}
+    {% set protos = service_details.get('protos',['tcp']) %}
 
     # Allow rules for ips/subnets
     {%- for ip in service_details.get('ips_allow',{}) %}
-      iptables_{{service_name}}_allow_{{ip}}:
+      {%- if interfaces == '' %}
+        {%- for proto in protos %}
+      iptables_{{service_name}}_allow_{{ip}}_{{proto}}:
         iptables.append:
           - table: filter
           - chain: INPUT
           - jump: ACCEPT
           - source: {{ ip }}
           - dport: {{ service_name }}
-          - proto: tcp
+          - proto: {{ proto }}
           - save: True
+        {%- endfor %}
+      {%- else %}
+        {%- for interface in interfaces %}
+          {%- for proto in protos %}
+      iptables_{{service_name}}_allow_{{ip}}_{{proto}}_{{interface}}:
+        iptables.append:
+          - table: filter
+          - chain: INPUT
+          - jump: ACCEPT
+          - i: {{ interface }}
+          - source: {{ ip }}
+          - dport: {{ service_name }}
+          - proto: {{ proto }}
+          - save: True
+          {%- endfor %}
+        {%- endfor %}
+      {%- endif %}
     {%- endfor %}
-
 
     {%- if not strict_mode and global_block_nomatch or block_nomatch %}
       # If strict mode is disabled we may want to block anything else
-      iptables_{{service_name}}_deny_other:
+      {%- if interfaces == '' %}
+        {%- for proto in protos %}
+      iptables_{{service_name}}_deny_other_{{proto}}:
         iptables.append:
           - position: last
           - table: filter
           - chain: INPUT
           - jump: REJECT
           - dport: {{ service_name }}
-          - proto: tcp
+          - proto: {{ proto }}
           - save: True
+        {%- endfor %}
+      {%- else %}
+        {%- for interface in interfaces %}
+          {%- for proto in protos %}
+      iptables_{{service_name}}_deny_other_{{proto}}_{{interface}}:
+        iptables.append:
+          - position: last
+          - table: filter
+          - chain: INPUT
+          - jump: REJECT
+          - i: {{ interface }}
+          - dport: {{ service_name }}
+          - proto: {{ proto }}
+          - save: True
+          {%- endfor %}
+        {%- endfor %}
+      {%- endif %}
+
     {%- endif %}    
 
   {%- endfor %}
