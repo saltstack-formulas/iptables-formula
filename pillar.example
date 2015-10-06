@@ -8,6 +8,18 @@ firewall:
       ips_allow:
         - 192.168.0.0/24
         - 10.0.2.2/32
+    http:
+      block_nomatch: False
+      protos:
+        - udp
+        - tcp
+    snmp:
+      block_nomatch: False
+      protos:
+        - udp
+        - tcp
+      interfaces:
+        - eht0
 
   whitelist:
     networks:

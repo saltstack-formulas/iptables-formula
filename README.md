@@ -32,6 +32,26 @@ firewall:
         - 10.0.2.2/32
 ```
 
+Apply rules to specific interface:
+```
+firewall:
+  services:
+    ssh:
+      interfaces:
+        - eth0
+        - eth1
+```
+
+Apply rules for multiple protocols:
+```
+firewall:
+  services:
+    ssh:
+      protos:
+        - udp
+        - tcp
+```
+
 Allow an entire class such as your internal network:
 
 ```
