@@ -58,7 +58,7 @@
     {% set protos = service_details.get('protos',['tcp']) %}
 
     # Allow rules for ips/subnets
-    {%- for ip in service_details.get('ips_allow',{}) %}
+    {%- for ip in service_details.get('ips_allow', []) %}
       {%- if interfaces == '' %}
         {%- for proto in protos %}
       iptables_{{service_name}}_allow_{{ip}}_{{proto}}:
@@ -143,7 +143,7 @@
 
   # Generate rules for whitelisting IP classes
   {%- for service_name, service_details in firewall.get('whitelist', {}).items() %}
-    {%- for ip in service_details.get('ips_allow',{}) %}
+    {%- for ip in service_details.get('ips_allow', []) %}
       iptables_{{service_name}}_allow_{{ip}}:
         iptables.append:
            - table: filter
