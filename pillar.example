@@ -1,39 +1,91 @@
 firewall:
   install: True
   enabled: True
-  strict: True
-  services:
+  # If strict doesn't work for you, see Salt issue #23643.
+  strict: False
+
+  input:
+    # iptables -t filter -A INPUT -p tcp -m tcp --dport ssh \
+    #     -i eth0 --jump ACCEPT
     ssh:
       block_nomatch: False
-      ips_allow:
-        - 192.168.0.0/24
-        - 10.0.2.2/32
-    http:
-      block_nomatch: False
-      protos:
-        - udp
-        - tcp
-    snmp:
-      block_nomatch: False
-      protos:
-        - udp
-        - tcp
       interfaces:
-        - eht0
+        - eth0
+    # /sbin/iptables -t filter -D INPUT -p tcp -m tcp --dport nbd \
+    #     --source 192.168.10.100/24 --jump ACCEPT
+    nbd:
+      command: delete
+      block_nomatch: False
+      networks:
+        - 192.168.10.100/24
+    # iptables -t filter -I INPUT 1 -p udp -m udp --dport tftp \
+    #    -i eth0 --source 0.0.0.0/0 --jump ACCEPT
+    tftp:
+      command: insert
+      block_nomatch: False
+      networks:
+        - 0.0.0.0/0
+      interfaces:
+         - eth0
+      protos:
+        - udp
+
+  forward:
+    # iptables -t filter -I 1 FORWARD -p tcp -m tcp --dport http \
+    #     -i eth0 --destination 192.168.100.20/32 --source 0.0.0.0/0 \
+    #     --jump ACCEPT
+    http:
+      # virsh nat rules automatically create REJECT rules, so we need
+      # to position our rule about that. See:
+      # https://libvirt.org/firewall.html
+      command: insert
+      networks:
+        # From anywhere, to 192.168.5.10.
+        # Note that entries starting with '*' must be quoted.
+        - '*:192.168.5.10/32'
+      interfaces:
+        # In eth0, out any interface.
+        - eth0:*
+      protos:
+        - tcp
+    https:
+      command: insert
+      networks:
+        - '*:192.168.5.10/32'
+      interfaces:
+         - 'eth0:*'
+      protos:
+        - tcp
+
+  dnat:
+    eth0:
+      # iptables -t nat -A PREROUTING -m tcp --dport http --protocol tcp \
+      #     -i eth0 --jump DNAT --to-destination 192.168.5.10
+      http:
+        proto: tcp
+        destination: 192.168.5.10
+      # iptables -t nat -A PREROUTING -m tcp --dport https --protocol tcp \
+      #     -i eth0 --jump DNAT --to-destination 192.168.5.10
+      https:
+        proto: tcp
+        destination: 192.168.5.10
+
+  #Suppport NAT masquerading
+  # iptables -t nat -A POSTROUTING -o eth0 \
+  #     -s 192.168.18.0/24 -d 10.20.0.2 -j MASQUERADE
+  # iptables -t nat -A POSTROUTING -o eth0 \
+  #     -s 192.168.18.0/24 -d 172.31.0.2 -j MASQUERADE
+  # iptables -t nat -A POSTROUTING -o eth0 \
+  #     -s 192.168.18.0/24 -d 10.0.0.0/8 -j MASQUERADE
+  masquerade:
+    eth0:
+      '192.168.18.0/24':
+        - 10.20.0.2
+      '192.168.18.0/24':
+        - 172.31.0.2
+        - 10.0.0.0/8
 
   whitelist:
     networks:
       ips_allow:
         - 10.0.0.0/8
-
-  #Suppport nat
-  # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.18.0/24 -d 10.20.0.2 -j MASQUERADE
-  # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.18.0/24 -d 172.31.0.2 -j MASQUERADE
-  nat:
-    eth0:
-      rules:
-        '192.168.18.0/24':
-          - 10.20.0.2
-        '192.168.18.0/24':
-          - 172.31.0.2
-          - 10.0.0.0/8

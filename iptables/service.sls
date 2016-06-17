@@ -16,13 +16,13 @@
   {% set global_block_nomatch = firewall.get('block_nomatch', False) %}
 
   # Generate ipsets for all services that we have information about
-  {%- for service_name, service_details in pfirewall.get('services', {}).items() %}
+  {%- for service_name, service_details in pfirewall.get('input', {}).items() %}
     {% set block_nomatch = service_details.get('block_nomatch', False) %}
     {% set interfaces = service_details.get('interfaces','') %}
     {% set protos = service_details.get('protos',['tcp']) %}
 
     # Allow rules for ips/subnets
-    {%- for ip in service_details.get('ips_allow',{}) %}
+    {%- for ip in service_details.get('networks',{}) %}
       {%- if interfaces == '' %}
         {%- for proto in protos %}
 .iptables_{{sls_params.parent}}_{{service_name}}_allow_{{ip}}_{{proto}}:

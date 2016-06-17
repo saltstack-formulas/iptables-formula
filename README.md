@@ -21,13 +21,25 @@ firewall:
 ```
 
 Allow SSH:
+```
+firewall:
+  input:
+    ssh:
+      block_nomatch: False
+      networks:
+        - 192.168.0.0/24
+        - 10.0.2.2/32
+```
+
+Undo the SSH allow rule:
 `pillars/firewall/ssh.sls`
 ```
 firewall:
-  services:
+  input:
     ssh:
+      command: delete
       block_nomatch: False
-      ips_allow:
+      networks:
         - 192.168.0.0/24
         - 10.0.2.2/32
 ```
@@ -35,7 +47,7 @@ firewall:
 Apply rules to specific interface:
 ```
 firewall:
-  services:
+  input:
     ssh:
       interfaces:
         - eth0
@@ -45,7 +57,7 @@ firewall:
 Apply rules for multiple protocols:
 ```
 firewall:
-  services:
+  input:
     ssh:
       protos:
         - udp
@@ -53,13 +65,36 @@ firewall:
 ```
 
 Allow an entire class such as your internal network:
-
 ```
-  whitelist:
+whitelist:
+  networks:
     networks:
-      ips_allow:
-        - 10.0.0.0/8
+      - 10.0.0.0/8
 ```
+
+Add a forwarding rule:
+```
+firewall:
+  forward:
+    http:
+      networks:
+        - '*:192.168.5.10'
+      interfaces:
+        - eth0:*
+      protos:
+        - tcp
+```
+
+Add a DNAT rule:
+```
+firewall:
+  dnat:
+    eth0:
+      http:
+        proto: tcp
+        destination: 192.168.5.10
+```
+
 
 Salt combines both and effectively enables your firewall and applies the rules.
 
@@ -72,16 +107,16 @@ Notes:
 Using iptables.service
 ======================
 
-Salt can't merge pillars, so you can only define `firewall:services` in once place. With the firewall.service state and stateconf, you can define pillars for different services and include and extend the iptables.service state with the `parent` parameter to enable a default firewall configuration with special rules for different services.
+Salt can't merge pillars, so you can only define `firewall:input`, `firewall:output`, etc. in once place. With the firewall.service state and stateconf, you can define pillars for different services and include and extend the iptables.service state with the `parent` parameter to enable a default firewall configuration with special rules for different services.
 
 `pillars/otherservice.sls`
 ```
 otherservice:
   firewall:
-    services:
+    input:
       http:
         block_nomatch: False
-        ips_allow:
+        networks:
           - 0.0.0.0/0
 ```
 
@@ -108,8 +143,8 @@ You can use nat for interface.
 
 # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.18.0/24 -j MASQUERADE
 
-  nat:
+  masquerade:
     eth0:
-      ips_allow:
+      networks:
         - 192.168.18.0/24
 ```
