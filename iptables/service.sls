@@ -16,7 +16,7 @@
   {% set global_block_nomatch = firewall.get('block_nomatch', False) %}
 
   # Generate ipsets for all services that we have information about
-  {%- for service_name, service_details in pfirewall.get('services', {}).items() %}  
+  {%- for service_name, service_details in pfirewall.get('services', {}).items() %}
     {% set block_nomatch = service_details.get('block_nomatch', False) %}
     {% set interfaces = service_details.get('interfaces','') %}
     {% set protos = service_details.get('protos',['tcp']) %}
@@ -83,7 +83,7 @@
           {%- endfor %}
         {%- endfor %}
       {%- endif %}
-    {%- endif %}    
+    {%- endif %}
 
   {%- endfor %}
 {%- endif %}
