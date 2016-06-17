@@ -15,7 +15,7 @@ iptables_packages:
   pkg.installed:
     - pkgs:
       {%- for pkg in packages %}
-      - {{pkg}}
+      - {{ pkg }}
       {%- endfor %}
   {%- endif %}
 
@@ -64,7 +64,7 @@ enable_reject_policy:
       {%- for ip in service_details.get('networks', ['*']) %}
         {%- for interface in interfaces %}
           {%- for proto in protos %}
-iptables_{{service_name}}_allow_{{ip}}_{{proto}}{{ '_{}'.format(interface) if interface else '' }}:
+iptables_{{ service_name }}_allow_{{ ip }}_{{ proto }}{{ '_{}'.format(interface) if interface else '' }}:
   iptables.{{ command }}:
     {%- if command in ('insert', 'replace', 'delete') and position %}
     - position: {{ position }}
@@ -107,7 +107,7 @@ iptables_{{service_name}}_allow_{{ip}}_{{proto}}{{ '_{}'.format(interface) if in
         # If strict mode is disabled we may want to block anything else
         {%- if interfaces == '' %}
           {%- for proto in protos %}
-iptables_{{iface_name}}_deny_other_{{proto}}:
+iptables_{{ iface_name }}_deny_other_{{ proto }}:
   iptables.append:
     - table: filter
     - chain: {{ chain }}
@@ -119,7 +119,7 @@ iptables_{{iface_name}}_deny_other_{{proto}}:
         {%- else %}
           {%- for interface in interfaces %}
             {%- for proto in protos %}
-iptables_{{iface_name}}_deny_other_{{proto}}_{{interface}}:
+iptables_{{ iface_name }}_deny_other_{{ proto }}_{{ interface }}:
   iptables.append:
     - table: filter
     - chain: {{ chain }}
@@ -141,14 +141,14 @@ iptables_{{iface_name}}_deny_other_{{proto}}_{{interface}}:
   {%- for iface_name, iface_details in firewall.get('masquerade', {}).items() %}
     {%- for ip_s, ip_ds in iface_details.items() %}
       {%- for ip_d in ip_ds %}
-iptables_{{iface_name}}_allow_{{ip_s}}_{{ip_d}}:
+iptables_{{ iface_name }}_allow_{{ ip_s }}_{{ ip_d }}:
   iptables.append:
     - table: nat
     - chain: POSTROUTING
     - jump: MASQUERADE
     - o: {{ iface_name }}
     - source: {{ ip_s }}
-    - destination: {{ip_d}}
+    - destination: {{ ip_d }}
     - save: True
       {%- endfor %}
     {%- endfor %}
@@ -176,7 +176,7 @@ iptables_{{ iface_name }}_dnat_{{ service_name }}:
   # Generate rules for whitelisting IP classes
   {%- for service_name, service_details in firewall.get('whitelist', {}).items() %}
     {%- for ip in service_details.get('ips_allow', []) %}
-iptables_{{service_name}}_allow_{{ip}}:
+iptables_{{ service_name }}_allow_{{ ip }}:
   iptables.append:
      - table: filter
      - chain: INPUT
