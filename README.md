@@ -1,7 +1,7 @@
 iptables-formula
 ================
 
-This module manages your firewall using iptables with pillar configured rules. 
+This module manages your firewall using iptables with pillar configured rules.
 Thanks to the nature of Pillars it is possible to write global and local settings (e.g. enable globally, configure locally)
 
 Pull requests are welcome for other platforms (or other improvements ofcourse!)
@@ -104,12 +104,12 @@ Using iptables.nat
 You can use nat for interface.
 
 ```
-#!stateconf yaml . jinja
-
-# iptables -t nat -A POSTROUTING -o eth0 -s 192.168.18.0/24 -j MASQUERADE
+  #Support nat
+  # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.18.0/24 -d 10.20.0.2 -j MASQUERADE
 
   nat:
     eth0:
-      ips_allow:
-        - 192.168.18.0/24
+      rules:
+        '192.168.18.0/24':
+          - 10.20.0.2
 ```
