@@ -56,6 +56,11 @@
     {% set block_nomatch = service_details.get('block_nomatch', False) %}
     {% set interfaces = service_details.get('interfaces','') %}
     {% set protos = service_details.get('protos',['tcp']) %}
+    {% if service_details.get('comment', False) %}
+      {% set comment = '- comment: ' + service_details.get('comment') %}
+    {% else %}
+      {% set comment = '' %}
+    {% endif %}
 
     # Allow rules for ips/subnets
     {%- for ip in service_details.get('ips_allow', []) %}
@@ -70,6 +75,7 @@
           - dport: {{ service_name }}
           - proto: {{ proto }}
           - save: True
+          {{ comment }}
         {%- endfor %}
       {%- else %}
         {%- for interface in interfaces %}
@@ -84,6 +90,7 @@
           - dport: {{ service_name }}
           - proto: {{ proto }}
           - save: True
+          {{ comment }}
           {%- endfor %}
         {%- endfor %}
       {%- endif %}
@@ -102,6 +109,7 @@
           - dport: {{ service_name }}
           - proto: {{ proto }}
           - save: True
+          {{ comment }}
         {%- endfor %}
       {%- else %}
         {%- for interface in interfaces %}
@@ -116,6 +124,7 @@
           - dport: {{ service_name }}
           - proto: {{ proto }}
           - save: True
+          {{ comment }}
           {%- endfor %}
         {%- endfor %}
       {%- endif %}
@@ -135,7 +144,7 @@
           - jump: MASQUERADE
           - o: {{ service_name }} 
           - source: {{ ip_s }}
-          - destination: {{ip_d}}
+          - destination: {{ ip_d }}
           - save: True
       {%- endfor %}
     {%- endfor %}
