@@ -101,7 +101,7 @@ extend:
 Using iptables.nat
 ==================
 
-You can use nat for interface.
+You can use nat for interface. This is supported for IPv4 alone. IPv6 deployments should not use NAT.
 
 ```
   #Support nat
@@ -113,3 +113,31 @@ You can use nat for interface.
         '192.168.18.0/24':
           - 10.20.0.2
 ```
+
+IPv6 Support
+============
+
+This formula supports IPv6 as long as it is activated with the option:
+
+```
+firewall:
+  ipv6: True
+```
+
+Services and whitelists are supported under the sections `services_ipv6` and `whitelist_ipv6`, as below:
+
+```
+  services_ipv6:
+    ssh:
+      block_nomatch: False
+      ips_allow:
+        - 2a02:2028:773:d01:10a5:f34f:e7ff:f55b/64
+        - 2a02:2028:773:d01:1814:28ef:e91b:70b8/64
+
+  whitelist_ipv6:
+    networks:
+      ips_allow:
+        - 2a02:2028:773:d01:1814:28ef:e91b:70b8/64
+```
+
+These sections are only processed if the ipv6 support is activated.
