@@ -284,4 +284,20 @@
     {%- endfor %}
   {%- endfor %}
 
+  # Generate rules for whitelisting IP classes with ipv6
+  {%- if ipv6 %} 
+  {%- for service_name, service_details in firewall.get('whitelist_ipv6', {}).items() %}
+    {%- for ip in service_details.get('ips_allow', []) %}
+      iptables_{{service_name}}_allow_{{ip}}_ipv6:
+        iptables.append:
+           - table: filter
+           - chain: INPUT
+           - jump: ACCEPT
+           - source: {{ ip }}
+           - family: ipv6
+           - save: True
+    {%- endfor %}
+  {%- endfor %}
+  {%- endif %}
+
 {%- endif %}
