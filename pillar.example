@@ -2,6 +2,7 @@ firewall:
   install: True
   enabled: True
   strict: True
+  ipv6: True
   services:
     ssh:
       block_nomatch: False
@@ -19,7 +20,27 @@ firewall:
         - udp
         - tcp
       interfaces:
-        - eht0
+        - eth0
+  services_ipv6:
+    ssh:
+      block_nomatch: False
+      ips_allow:
+        - 2a02:2028:773:d01:10a5:f34f:e7ff:f55b/64
+        - 2a02:2028:773:d01:1814:28ef:e91b:70b8/64
+    http:
+      block_nomatch: False
+      protos:
+        - udp
+        - tcp
+    snmp:
+      block_nomatch: False
+      protos:
+        - udp
+        - tcp
+      interfaces:
+        - eth0
+
+
 
   whitelist:
     networks:
