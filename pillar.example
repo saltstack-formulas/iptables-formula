@@ -19,7 +19,7 @@ firewall:
         - udp
         - tcp
       interfaces:
-        - eht0
+        - eth0
 
   whitelist:
     networks:
