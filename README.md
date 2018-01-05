@@ -9,7 +9,7 @@ Pull requests are welcome for other platforms (or other improvements ofcourse!)
 Usage
 =====
 
-All the configuration for the firewall is done via pillar (pillar.example).
+All the configuration for the firewall is done via the pillar (see the pillar.example file).
 
 Enable globally:
 `pillars/firewall.sls`
@@ -64,10 +64,10 @@ Allow an entire class such as your internal network:
 Salt combines both and effectively enables your firewall and applies the rules.
 
 Notes:
- * Setting install to True will install `iptables` and `iptables-perrsistent` for you
+ * Setting install to True will install `iptables` and `iptables-persistent` for you
  * Strict mode means: Deny **everything** except explicitly allowed (use with care!)
  * block_nomatch: With non-strict mode adds in a "REJECT" rule below the accept rules, otherwise other traffic to that service is still allowed. Can be defined per-service or globally, defaults to False.
- * Servicenames can be either port numbers or servicenames (e.g. ssh, zabbix-agent, http) and are available for viewing/configuring in `/etc/services`
+ * Service names can be either port numbers or service names (e.g. ssh, zabbix-agent, http) and are available for viewing/configuring in `/etc/services`
 
 Using iptables.service
 ======================
