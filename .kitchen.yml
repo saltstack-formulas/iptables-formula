@@ -1,0 +1,39 @@
+<%
+require 'yaml'
+formula = YAML.load_file('metadata.yml')
+formula_name = formula['name']
+%>
+---
+
+driver:
+  name: vagrant
+  hostname: ubuntu.ci.local
+
+provisioner:
+  name: salt_solo
+  salt_install: bootstrap
+  salt_bootstrap_url: https://bootstrap.saltstack.com
+  salt_version: latest
+  pillars-from-files:
+    <%= formula_name %>.sls: pillar.example
+  pillars:
+    top.sls:
+      base:
+        '*':
+          - <%= formula_name %>
+  log_level: <%= ENV['SALT_DEBUG_LEVEL'] || 'debug' %>
+  formula: <%= formula_name %>
+  state_top:
+    base:
+      '*':
+        - <%= formula_name %>
+
+platforms:
+  - name: ubuntu-16
+    driver_config:
+      box: ubuntu/xenial64
+    driver:
+      cache_directory: false
+
+suites:
+  - name: default
