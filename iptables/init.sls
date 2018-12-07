@@ -63,7 +63,7 @@
     {% endif %}
 
     # Allow rules for ips/subnets
-    {%- for ip in service_details.get('ips_allow', []) %}
+    {%- for ip in service_details.get('ips_allow', ['0.0.0.0/0']) %}
       {%- if interfaces == '' %}
         {%- for proto in protos %}
       iptables_{{service_name}}_allow_{{ip}}_{{proto}}:
