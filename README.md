@@ -68,6 +68,7 @@ Notes:
  * Strict mode means: Deny **everything** except explicitly allowed (use with care!)
  * block_nomatch: With non-strict mode adds in a "REJECT" rule below the accept rules, otherwise other traffic to that service is still allowed. Can be defined per-service or globally, defaults to False.
  * Service names can be either port numbers or service names (e.g. ssh, zabbix-agent, http) and are available for viewing/configuring in `/etc/services`
+ * If no `ips_allow` stanza is provided for any particular ruleset instead of not adding the rule the addition itself is scoped globally (0.0.0.0/0)
 
 Using iptables.service
 ======================
