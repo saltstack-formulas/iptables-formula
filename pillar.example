@@ -6,8 +6,9 @@ firewall:
     ssh:
       block_nomatch: True
       ips_allow:
-        - 192.168.0.0/24
-        - 10.0.2.2/32
+        - 10.0.0.0/8
+        - 172.16.0.0/12
+        - 192.168.0.0/16
     http:
       block_nomatch: False
       protos:

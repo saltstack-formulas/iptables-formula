@@ -6,6 +6,8 @@ Thanks to the nature of Pillars it is possible to write global and local setting
 
 Pull requests are welcome for other platforms (or other improvements ofcourse!)
 
+.. image:: https://travis-ci.org/saltstack-formulas/iptables-formula.svg?branch=master
+
 Usage
 =====
 
