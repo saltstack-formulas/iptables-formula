@@ -1,14 +1,14 @@
-# Firewall management module
-{%- if salt['pillar.get']('firewall:enabled') %}
-  {% set firewall = salt['pillar.get']('firewall', {}) %}
-  {% set install = firewall.get('install', False) %}
-  {% set strict_mode = firewall.get('strict', False) %}
-  {% set global_block_nomatch = firewall.get('block_nomatch', False) %}
-  {% set packages = salt['grains.filter_by']({
-    'Debian': ['iptables', 'iptables-persistent'],
-    'RedHat': ['iptables'],
-    'default': 'Debian'}) %}
+# -*- coding: utf-8 -*-
+# vim: ft=sls
 
+# Firewall management module
+{% from "iptables/map.jinja" import firewall with context %}
+{% set install = firewall.install %}
+{% set strict_mode = firewall.strict %}
+{% set global_block_nomatch = firewall.block_nomatch %}
+{% set packages = firewall.pkgs %}
+
+{%- if firewall.enabled %}
     {%- if install %}
       # Install required packages for firewalling
       iptables_packages:
@@ -165,4 +165,9 @@
     {%- endfor %}
   {%- endfor %}
 
+{% else %} # Firewall is disabled by default
+firewall_disabled:
+  test.show_notification:
+    - name: Firewall is disabled by default
+    - text: firewall:enabled is False
 {%- endif %}
