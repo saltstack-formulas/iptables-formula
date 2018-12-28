@@ -6,7 +6,7 @@ Thanks to the nature of Pillars it is possible to write global and local setting
 
 Pull requests are welcome for other platforms (or other improvements ofcourse!)
 
-.. image:: https://travis-ci.org/saltstack-formulas/iptables-formula.svg?branch=master
+![Build Status](https://travis-ci.org/saltstack-formulas/iptables-formula.svg?branch=master "Travis-CI testing status")
 
 Usage
 =====
@@ -14,8 +14,10 @@ Usage
 All the configuration for the firewall is done via the pillar (see the pillar.example file).
 
 Enable globally:
+
 `pillars/firewall.sls`
-```
+
+```yaml
 firewall:
   enabled: True
   install: True  
@@ -23,8 +25,10 @@ firewall:
 ```
 
 Allow SSH:
+
 `pillars/firewall/ssh.sls`
-```
+
+```yaml
 firewall:
   services:
     ssh:
@@ -35,7 +39,8 @@ firewall:
 ```
 
 Apply rules to specific interface:
-```
+
+```yaml
 firewall:
   services:
     ssh:
@@ -45,7 +50,9 @@ firewall:
 ```
 
 Apply rules for multiple protocols:
-```
+
+
+```yaml
 firewall:
   services:
     ssh:
@@ -56,7 +63,7 @@ firewall:
 
 Allow an entire class such as your internal network:
 
-```
+```yaml
   whitelist:
     networks:
       ips_allow:
@@ -66,6 +73,7 @@ Allow an entire class such as your internal network:
 Salt combines both and effectively enables your firewall and applies the rules.
 
 Notes:
+
  * Setting install to True will install `iptables` and `iptables-persistent` for you
  * Strict mode means: Deny **everything** except explicitly allowed (use with care!)
  * block_nomatch: With non-strict mode adds in a "REJECT" rule below the accept rules, otherwise other traffic to that service is still allowed. Can be defined per-service or globally, defaults to False.
@@ -78,7 +86,8 @@ Using iptables.service
 Salt can't merge pillars, so you can only define `firewall:services` in once place. With the firewall.service state and stateconf, you can define pillars for different services and include and extend the iptables.service state with the `parent` parameter to enable a default firewall configuration with special rules for different services.
 
 `pillars/otherservice.sls`
-```
+
+```yaml
 otherservice:
   firewall:
     services:
@@ -89,7 +98,8 @@ otherservice:
 ```
 
 `states/otherservice.sls`
-```
+
+```yaml
 #!stateconf yaml . jinja
 
 include:
@@ -106,7 +116,7 @@ Using iptables.nat
 
 You can use nat for interface.
 
-```
+```yaml
   #Support nat
   # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.18.0/24 -d 10.20.0.2 -j MASQUERADE
 
