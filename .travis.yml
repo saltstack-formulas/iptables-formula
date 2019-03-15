@@ -14,6 +14,10 @@ env:
     - INSTANCE: default-ubuntu-1804
     - INSTANCE: default-centos-7
     - INSTANCE: default-fedora-27
+    - INSTANCE: tables-debian-9
+    - INSTANCE: tables-ubuntu-1804
+    - INSTANCE: tables-centos-7
+    - INSTANCE: tables-fedora-27
 
 script:
   - bundle exec kitchen verify ${INSTANCE}

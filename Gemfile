@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'test-kitchen', '>=1.20'
-gem 'kitchen-docker'
-gem 'kitchen-salt', '>=0.4.0'
-gem 'kitchen-inspec'
-
+gem 'kitchen-docker', '>= 2.9'
+gem 'kitchen-salt', '>= 0.5.0'
+gem 'kitchen-inspec', '>= 1.1'

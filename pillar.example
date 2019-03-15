@@ -2,6 +2,8 @@ firewall:
   install: True
   enabled: True
   strict: True
+  ## To manage the firewall writing rules instead of services, check
+  ## the `pillar.tables.example` for examples
   services:
     ssh:
       block_nomatch: True

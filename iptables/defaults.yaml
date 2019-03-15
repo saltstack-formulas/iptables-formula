@@ -4,6 +4,48 @@ firewall:
   enabled: false
   install: false
   strict: false
+  # If use_mode is false, we use the services-based default behaviour
+  use_tables: false
   block_nomatch: false
   pkgs:
     - iptables
+
+  filter:
+    INPUT:
+      policy: ACCEPT
+      rules: {}
+    FORWARD:
+      policy: ACCEPT
+      rules: {}
+    OUTPUT:
+      policy: ACCEPT
+      rules: {}
+
+  nat:
+    PREROUTING:
+      policy: ACCEPT
+      rules: {}
+    INPUT:
+      policy: ACCEPT
+      rules: {}
+    OUTPUT:
+      policy: ACCEPT
+      rules: {}
+    POSTROUTING:
+      policy: ACCEPT
+      rules: {}
+
+  mangle:
+    PREROUTING:
+      policy: ACCEPT
+      rules: {}
+    INPUT:
+      policy: ACCEPT
+      rules: {}
+    OUTPUT:
+      policy: ACCEPT
+      rules: {}
+    POSTROUTING:
+      policy: ACCEPT
+      rules: {}
+

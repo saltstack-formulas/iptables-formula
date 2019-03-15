@@ -35,7 +35,7 @@ provisioner:
   salt_copy_filter:
     - .kitchen
     - .git
-  pillars-from-files:
+  pillars_from_files:
     iptables.sls: pillar.example
   pillars:
     top.sls:
@@ -59,3 +59,22 @@ verifier:
 
 suites:
   - name: default
+  - name: tables
+    provisioner:
+      pillars_from_files:
+        tables.sls: pillar.tables.example
+      pillars:
+        top.sls:
+          base:
+            '*':
+              - tables
+    
+      state_top:
+        base:
+          '*':
+            - iptables
+            - iptables.tables
+
+    verifier:
+      inspec_tests:
+        - path: test/integration/tables

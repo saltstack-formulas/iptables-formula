@@ -4,6 +4,7 @@
 # Firewall management module
 {% from "iptables/map.jinja" import firewall with context %}
 {% set install = firewall.install %}
+{% set use_tables = firewall.use_tables %}
 {% set strict_mode = firewall.strict %}
 {% set global_block_nomatch = firewall.block_nomatch %}
 {% set packages = firewall.pkgs %}
@@ -51,6 +52,7 @@
             - iptables: iptables_allow_established
     {%- endif %}
 
+  {% if not use_tables %}
   # Generate ipsets for all services that we have information about
   {%- for service_name, service_details in firewall.get('services', {}).items() %}
     {% set block_nomatch = service_details.get('block_nomatch', False) %}
@@ -151,6 +153,8 @@
       {%- endfor %}
     {%- endfor %}
   {%- endfor %}
+
+  {% endif %}
 
   # Generate rules for whitelisting IP classes
   {%- for service_name, service_details in firewall.get('whitelist', {}).items() %}

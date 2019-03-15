@@ -11,6 +11,8 @@ Pull requests are welcome for other platforms (or other improvements ofcourse!)
 Usage
 =====
 
+## Configure the firewall using `services`
+
 All the configuration for the firewall is done via the pillar (see the pillar.example file).
 
 Enable globally:
@@ -22,6 +24,7 @@ firewall:
   enabled: True
   install: True  
   strict: True
+  use_tables: False
 ```
 
 Allow SSH:
@@ -126,3 +129,17 @@ You can use nat for interface.
         '192.168.18.0/24':
           - 10.20.0.2
 ```
+## Configure the firewall using `tables`
+
+The state `iptables.tables` let's you configure your firewall iterating over pillars
+defining rules to add to the different tables (filter, mangle, nat) instead of using services.
+
+Just set to enable the 'tables' mode:
+
+```yaml
+firewall:
+  use_tables: True
+```
+
+Please check the `pillar.tables.example` to see how to define your rules.
+
