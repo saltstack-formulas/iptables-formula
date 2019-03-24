@@ -5,16 +5,15 @@
 {% from "iptables/map.jinja" import firewall with context %}
 {% set install = firewall.install %}
 {% set strict_mode = firewall.strict %}
-{% set ipv6 = firewall.get('ipv6', False) %}
 {% set global_block_nomatch = firewall.block_nomatch %}
 {% set packages = firewall.pkgs %}
 {% set ipv4 = 'IPv4' %}
 {% set ipv6 = 'IPv6' %}
 {% set protocols = [ipv4] %}
-{% if ipv6 %}
+{% if firewall.get('ipv6', False) %}
 {%   do protocols.append(ipv6) %}
 {% endif %}
-{% set sufixes = {ipv4: '', ipv6: '_ipv6'} %}
+{% set suffixes = {ipv4: '', ipv6: '_ipv6'} %}
 
 {%- if firewall.enabled %}
     {%- if install %}
@@ -31,7 +30,7 @@
       # If the firewall is set to strict mode, we'll need to allow some
       # that always need access to anything
       {%- for protocol in protocols %}
-      iptables_allow_localhost{{sufixes[protocol]}}:
+      iptables_allow_localhost{{suffixes[protocol]}}:
         iptables.append:
           - table: filter
           - chain: INPUT
@@ -45,7 +44,7 @@
           - save: True
 
       # Allow related/established sessions
-      iptables_allow_established{{sufixes[protocol]}}:
+      iptables_allow_established{{suffixes[protocol]}}:
         iptables.append:
           - table: filter
           - chain: INPUT
@@ -58,7 +57,7 @@
           - save: True
 
       # Set the policy to deny everything unless defined
-      enable_reject_policy{{sufixes[protocol]}}:
+      enable_reject_policy{{suffixes[protocol]}}:
         iptables.set_policy:
           - table: filter
           - chain: INPUT
@@ -67,14 +66,14 @@
           - family: ipv6
         {%- endif %}
           - require:
-            - iptables: iptables_allow_localhost{{sufixes[protocol]}}
-            - iptables: iptables_allow_established{{sufixes[protocol]}}
+            - iptables: iptables_allow_localhost{{suffixes[protocol]}}
+            - iptables: iptables_allow_established{{suffixes[protocol]}}
       {%- endfor %}
     {%- endif %}
 
   # Generate ipsets for all services that we have information about
   {%- for protocol in protocols %}
-    {%- for service_name, service_details in firewall.get('services' + sufixes[protocol], {}).items() %}
+    {%- for service_name, service_details in firewall.get('services' + suffixes[protocol], {}).items() %}
       {% set block_nomatch = service_details.get('block_nomatch', False) %}
       {% set interfaces = service_details.get('interfaces','') %}
       {% set protos = service_details.get('protos',['tcp']) %}
@@ -88,7 +87,7 @@
       {%- for ip in service_details.get('ips_allow', ['0.0.0.0/0']) %}
         {%- if interfaces == '' %}
           {%- for proto in protos %}
-      iptables_{{service_name}}_allow_{{ip}}_{{proto}}{{sufixes[protocol]}}:
+      iptables_{{service_name}}_allow_{{ip}}_{{proto}}{{suffixes[protocol]}}:
         iptables.insert:
           - position: 1
           - table: filter
@@ -106,7 +105,7 @@
         {%- else %}
           {%- for interface in interfaces %}
             {%- for proto in protos %}
-      iptables_{{service_name}}_allow_{{ip}}_{{proto}}_{{interface}}{{sufixes[protocol]}}:
+      iptables_{{service_name}}_allow_{{ip}}_{{proto}}_{{interface}}{{suffixes[protocol]}}:
         iptables.insert:
           - position: 1
           - table: filter
@@ -130,7 +129,7 @@
         # If strict mode is disabled we may want to block anything else
         {%- if interfaces == '' %}
           {%- for proto in protos %}
-      iptables_{{service_name}}_deny_other_{{proto}}{{sufixes[protocol]}}:
+      iptables_{{service_name}}_deny_other_{{proto}}{{suffixes[protocol]}}:
         iptables.append:
           - position: last
           - table: filter
@@ -147,7 +146,7 @@
         {%- else %}
           {%- for interface in interfaces %}
             {%- for proto in protos %}
-      iptables_{{service_name}}_deny_other_{{proto}}_{{interface}}{{sufixes[protocol]}}:
+      iptables_{{service_name}}_deny_other_{{proto}}_{{interface}}{{suffixes[protocol]}}:
         iptables.append:
           - position: last
           - table: filter
@@ -191,7 +190,7 @@
   {%- for protocol in protocols %}
     {%- for service_name, service_details in firewall.get('whitelist', {}).items() %}
       {%- for ip in service_details.get('ips_allow', []) %}
-        iptables_{{service_name}}_allow_{{ip}}{{sufixes[protocol]}}:
+        iptables_{{service_name}}_allow_{{ip}}{{suffixes[protocol]}}:
           iptables.append:
             - table: filter
             - chain: INPUT
