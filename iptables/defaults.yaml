@@ -4,7 +4,7 @@ firewall:
   enabled: false
   install: false
   strict: false
-  # If use_mode is false, we use the services-based default behaviour
+  # If use_tables is false, we use the services-based default behaviour
   use_tables: false
   block_nomatch: false
   pkgs:
