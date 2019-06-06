@@ -1,16 +1,55 @@
-iptables-formula
-================
+.. _readme:
 
-This module manages your firewall using iptables with pillar configured rules.
+iptables
+========
+
+|img_travis| |img_sr|
+
+.. |img_travis| image:: https://travis-ci.com/saltstack-formulas/iptables-formula.svg?branch=master
+   :alt: Travis CI Build Status
+   :scale: 100%
+   :target: https://travis-ci.com/saltstack-formulas/iptables-formula
+.. |img_sr| image:: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+   :alt: Semantic Release
+   :scale: 100%
+   :target: https://github.com/semantic-release/semantic-release
+
+This formula manages your firewall using iptables with pillar configured rules.
 Thanks to the nature of Pillars it is possible to write global and local settings (e.g. enable globally, configure locally)
+
+.. contents:: **Table of Contents**
+
+General notes
+-------------
 
 Pull requests are welcome for other platforms (or other improvements ofcourse!)
 
-![Build Status](https://travis-ci.org/saltstack-formulas/iptables-formula.svg?branch=master "Travis-CI testing status")
+See the full `SaltStack Formulas installation and usage instructions
+<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
+
+If you are interested in writing or contributing to formulas, please pay attention to the `Writing Formula Section
+<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#writing-formulas>`_.
+
+If you want to use this formula, please pay attention to the ``FORMULA`` file and/or ``git tag``,
+which contains the currently released version. This formula is versioned according to `Semantic Versioning <http://semver.org/>`_.
+
+See `Formula Versioning Section <https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#versioning>`_ for more details.
+
+Contributing to this repo
+-------------------------
+
+**Commit message formatting is significant!!**
+
+Please see :ref:`How to contribute <CONTRIBUTING>` for more details.
+
+.. contents::
+   :local:
 
 Usage
-=====
+-----
 
+Default usage
+^^^^^^^^^^^^^
 All the configuration for the firewall is done via the pillar (see the pillar.example file).
 
 Enable globally:
@@ -81,7 +120,7 @@ Notes:
  * If no `ips_allow` stanza is provided for any particular ruleset instead of not adding the rule the addition itself is scoped globally (0.0.0.0/0)
 
 Using iptables.service
-======================
+^^^^^^^^^^^^^^^^^^^^^^
 
 Salt can't merge pillars, so you can only define `firewall:services` in once place. With the firewall.service state and stateconf, you can define pillars for different services and include and extend the iptables.service state with the `parent` parameter to enable a default firewall configuration with special rules for different services.
 
@@ -112,7 +151,7 @@ extend:
 ```
 
 Using iptables.nat
-==================
+^^^^^^^^^^^^^^^^^^
 
 You can use nat for interface. This is supported for IPv4 alone. IPv6 deployments should not use NAT.
 
@@ -128,7 +167,7 @@ You can use nat for interface. This is supported for IPv4 alone. IPv6 deployment
 ```
 
 IPv6 Support
-============
+------------
 
 This formula supports IPv6 as long as it is activated with the option:
 
@@ -153,3 +192,49 @@ Services and whitelists are supported under the sections `services_ipv6` and `wh
 ```
 
 These sections are only processed if the ipv6 support is activated.
+
+Testing
+-------
+
+Linux testing is done with ``kitchen-salt``.
+
+Requirements
+^^^^^^^^^^^^
+
+* Ruby
+* Docker
+
+.. code-block:: bash
+
+   $ gem install bundler
+   $ bundle install
+   $ bin/kitchen test [platform]
+
+Where ``[platform]`` is the platform name defined in ``kitchen.yml``,
+e.g. ``debian-9-2019-2-py3``.
+
+``bin/kitchen converge``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Creates the docker instance and runs the ``iptables`` main state, ready for testing.
+
+``bin/kitchen verify``
+^^^^^^^^^^^^^^^^^^^^^^
+
+Runs the ``inspec`` tests on the actual instance.
+
+``bin/kitchen destroy``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Removes the docker instance.
+
+``bin/kitchen test``
+^^^^^^^^^^^^^^^^^^^^
+
+Runs all of the stages above in one go: i.e. ``destroy`` + ``converge`` + ``verify`` + ``destroy``.
+
+``bin/kitchen login``
+^^^^^^^^^^^^^^^^^^^^^
+
+Gives you SSH access to the instance for manual testing.
+
