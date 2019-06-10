@@ -54,11 +54,24 @@ verifier:
   # cli, documentation, html, progress, json, json-min, json-rspec, junit
   reporter:
     - cli
-  inspec_tests:
-    - path: test/integration/default
 
 suites:
   - name: default
     provisioner:
       pillars_from_files:
         iptables.sls: test/salt/pillar/default.pillar.sls
+    verifier:
+      inspec_tests:
+        - path: test/integration/default
+  - name: tables
+    provisioner:
+      pillars_from_files:
+        iptables.sls: test/salt/pillar/tables.pillar.sls
+      state_top:
+        base:
+          '*':
+            - iptables
+            - iptables.tables
+    verifier:
+      inspec_tests:
+        - path: test/integration/tables

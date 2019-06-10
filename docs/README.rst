@@ -166,6 +166,22 @@ You can use nat for interface. This is supported for IPv4 alone. IPv6 deployment
           - 10.20.0.2
 ```
 
+Configure the firewall using `tables`
+-------------------------------------
+
+The state `iptables.tables` let's you configure your firewall iterating over pillars
+defining rules and policies to add to the different tables (filter, mangle, nat) instead of using services.
+This way, you can configure iptables the *classic way*. Note that you still need to include the `iptables` state.
+
+To enable the 'tables' mode, set:
+
+```yaml
+firewall:
+  use_tables: True
+```
+
+and then add rules to configure iptables. Check the `pillar.example`'s *table* section to see some examples.
+
 IPv6 Support
 ------------
 
