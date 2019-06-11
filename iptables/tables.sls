@@ -1,36 +1,36 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{% from "iptables/map.jinja" import firewall with context %}
+{%- from "iptables/map.jinja" import firewall with context %}
 
-{% for t in ['filter','nat','mangle'] %}
-  {% for cn, cv in firewall.get(t)|dictsort %}
-    {% set pol = cv.policy | default('ACCEPT') %}
-    {% set rules = cv.rules | default({}) %}
+{%- for t in ['filter','nat','mangle'] %}
+  {%- for cn, cv in firewall.get(t)|dictsort %}
+    {%- set pol = cv.policy | default('ACCEPT') %}
+    {%- set rules = cv.rules | default({}) %}
 
 chain_present_{{ t }}_{{ cn }}:
   iptables.chain_present:
     - table: {{ t }}
     - name: {{ cn }}
 
-    {% for rn, rv in rules|dictsort %}
+    {%- for rn, rv in rules|dictsort %}
 rule_{{ t }}_{{ cn }}_{{ rn }}:
-      {% if rv['position'] is defined %}
+      {%- if rv['position'] is defined %}
   iptables.insert:
-      {% else %}
+      {%- else %}
   iptables.append:
-      {% endif %}
+      {%- endif %}
     - table: {{ t }}
     - chain: {{ cn }}
-        {% for k,v in rv|dictsort %}
+        {%- for k,v in rv|dictsort %}
     - {{ k }}: '{{ v }}'
-        {% endfor %}
+        {%- endfor %}
     - save: true
     - require:
       - iptables: chain_present_{{ t }}_{{ cn }}
-    {% endfor %}
+    {%- endfor %}
 
-    {% if cn in ['INPUT','OUTPUT','FORWARD','PREROUTING','POSTROUTING'] %}
+    {%- if cn in ['INPUT','OUTPUT','FORWARD','PREROUTING','POSTROUTING'] %}
     # Set policies
 policy_{{ t }}_{{ cn }}_{{ pol }}:
   iptables.set_policy:
@@ -38,6 +38,6 @@ policy_{{ t }}_{{ cn }}_{{ pol }}:
     - chain: {{ cn }}
     - policy: {{ pol }}
     - save: true
-    {% endif %}
-  {% endfor %}
-{% endfor %}
+    {%- endif %}
+  {%- endfor %}
+{%- endfor %}
