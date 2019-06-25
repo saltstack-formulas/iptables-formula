@@ -27,6 +27,13 @@ platforms:
     driver:
       image: netmanagers/salt-2019.2-py3:opensuse-leap-15
       run_command: /usr/lib/systemd/systemd
+  - name: ubuntu-1604-2018-3-py2
+    driver:
+      image: netmanagers/salt-2018.3-py2:ubuntu-16.04
+  - name: opensuse-leap-42-2017-7-py2
+    driver:
+      image: netmanagers/salt-2017.7-py2:opensuse-leap-42
+      run_command: /usr/lib/systemd/systemd
 
 provisioner:
   name: salt_solo
@@ -54,11 +61,24 @@ verifier:
   # cli, documentation, html, progress, json, json-min, json-rspec, junit
   reporter:
     - cli
-  inspec_tests:
-    - path: test/integration/default
 
 suites:
   - name: default
     provisioner:
       pillars_from_files:
         iptables.sls: test/salt/pillar/default.pillar.sls
+    verifier:
+      inspec_tests:
+        - path: test/integration/default
+  - name: tables
+    provisioner:
+      pillars_from_files:
+        iptables.sls: test/salt/pillar/tables.pillar.sls
+      state_top:
+        base:
+          '*':
+            - iptables
+            - iptables.tables
+    verifier:
+      inspec_tests:
+        - path: test/integration/tables

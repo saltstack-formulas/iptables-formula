@@ -71,22 +71,23 @@ enable_reject_policy{{suffixes[protocol]}}:
 {%-     endfor %}
 {%-   endif %}
 
+{%-   if not firewall.use_tables %}
 # Generate ipsets for all services that we have information about
-{%-   for protocol in protocols %}
-{%-     for service_name, service_details in firewall.get('services' + suffixes[protocol], {}).items() %}
-{%-       set block_nomatch = service_details.get('block_nomatch', False) %}
-{%-       set interfaces = service_details.get('interfaces','') %}
-{%-       set protos = service_details.get('protos',['tcp']) %}
-{%-       if service_details.get('comment', False) %}
-{%-         set comment = '- comment: ' + service_details.get('comment') %}
-{%-       else %}
-{%-         set comment = '' %}
-{%-       endif %}
+{%-     for protocol in protocols %}
+{%-       for service_name, service_details in firewall.get('services' + suffixes[protocol], {}).items() %}
+{%-         set block_nomatch = service_details.get('block_nomatch', False) %}
+{%-         set interfaces = service_details.get('interfaces','') %}
+{%-         set protos = service_details.get('protos',['tcp']) %}
+{%-         if service_details.get('comment', False) %}
+{%-           set comment = '- comment: ' + service_details.get('comment') %}
+{%-         else %}
+{%-           set comment = '' %}
+{%-         endif %}
 
 # Allow rules for ips/subnets
-{%-       for ip in service_details.get('ips_allow', ['0.0.0.0/0']) %}
-{%-         if interfaces == '' %}
-{%-           for proto in protos %}
+{%-         for ip in service_details.get('ips_allow', ['0.0.0.0/0']) %}
+{%-           if interfaces == '' %}
+{%-             for proto in protos %}
 iptables_{{service_name}}_allow_{{ip}}_{{proto}}{{suffixes[protocol]}}:
   iptables.insert:
     - position: 1
@@ -96,15 +97,15 @@ iptables_{{service_name}}_allow_{{ip}}_{{proto}}{{suffixes[protocol]}}:
     - source: {{ ip }}
     - dport: {{ service_name }}
     - proto: {{ proto }}
-{%-             if protocol == ipv6 %}
+{%-               if protocol == ipv6 %}
     - family: ipv6
-{%-             endif %}
+{%-               endif %}
     - save: True
     {{ comment }}
-{%-           endfor %}
-{%-         else %}
-{%-           for interface in interfaces %}
-{%-             for proto in protos %}
+{%-             endfor %}
+{%-           else %}
+{%-             for interface in interfaces %}
+{%-               for proto in protos %}
 iptables_{{service_name}}_allow_{{ip}}_{{proto}}_{{interface}}{{suffixes[protocol]}}:
   iptables.insert:
     - position: 1
@@ -115,20 +116,20 @@ iptables_{{service_name}}_allow_{{ip}}_{{proto}}_{{interface}}{{suffixes[protoco
     - source: {{ ip }}
     - dport: {{ service_name }}
     - proto: {{ proto }}
-{%-               if protocol == ipv6 %}
+{%-                 if protocol == ipv6 %}
     - family: ipv6
-{%-               endif %}
+{%-                 endif %}
     - save: True
     {{ comment }}
+{%-               endfor %}
 {%-             endfor %}
-{%-           endfor %}
-{%-         endif %}
-{%-       endfor %}
+{%-           endif %}
+{%-         endfor %}
 
-{%-       if not strict_mode and global_block_nomatch or block_nomatch %}
+{%-         if not strict_mode and global_block_nomatch or block_nomatch %}
 # If strict mode is disabled we may want to block anything else
-{%-         if interfaces == '' %}
-{%-           for proto in protos %}
+{%-           if interfaces == '' %}
+{%-             for proto in protos %}
 iptables_{{service_name}}_deny_other_{{proto}}{{suffixes[protocol]}}:
   iptables.append:
     - position: last
@@ -137,15 +138,15 @@ iptables_{{service_name}}_deny_other_{{proto}}{{suffixes[protocol]}}:
     - jump: REJECT
     - dport: {{ service_name }}
     - proto: {{ proto }}
-{%-             if protocol == ipv6 %}
+{%-               if protocol == ipv6 %}
     - family: ipv6
-{%-             endif %}
+{%-               endif %}
     - save: True
     {{ comment }}
-{%-           endfor %}
-{%-         else %}
-{%-           for interface in interfaces %}
-{%-             for proto in protos %}
+{%-             endfor %}
+{%-           else %}
+{%-             for interface in interfaces %}
+{%-               for proto in protos %}
 iptables_{{service_name}}_deny_other_{{proto}}_{{interface}}{{suffixes[protocol]}}:
   iptables.append:
     - position: last
@@ -155,22 +156,22 @@ iptables_{{service_name}}_deny_other_{{proto}}_{{interface}}{{suffixes[protocol]
     - i: {{ interface }}
     - dport: {{ service_name }}
     - proto: {{ proto }}
-{%-               if protocol == ipv6 %}
+{%-                 if protocol == ipv6 %}
     - family: ipv6
-{%-               endif %}
+{%-                 endif %}
     - save: True
     {{ comment }}
+{%-               endfor %}
 {%-             endfor %}
-{%-           endfor %}
+{%-           endif %}
 {%-         endif %}
-{%-       endif %}
+{%-       endfor %}
 {%-     endfor %}
-{%-   endfor %}
 
 # Generate rules for NAT
-{%-   for service_name, service_details in firewall.get('nat', {}).items() %}
-{%-     for ip_s, ip_ds in service_details.get('rules', {}).items() %}
-{%-       for ip_d in ip_ds %}
+{%-     for service_name, service_details in firewall.get('nat', {}).items() %}
+{%-       for ip_s, ip_ds in service_details.get('rules', {}).items() %}
+{%-         for ip_d in ip_ds %}
 iptables_{{service_name}}_allow_{{ip_s}}_{{ip_d}}:
   iptables.append:
     - table: nat
@@ -180,27 +181,28 @@ iptables_{{service_name}}_allow_{{ip_s}}_{{ip_d}}:
     - source: {{ ip_s }}
     - destination: {{ ip_d }}
     - save: True
+{%-         endfor %}
 {%-       endfor %}
 {%-     endfor %}
-{%-   endfor %}
 
 # Generate rules for whitelisting IP classes
-{%-   for protocol in protocols %}
-{%-     for service_name, service_details in firewall.get('whitelist' + suffixes[protocol], {}).items() %}
-{%-       for ip in service_details.get('ips_allow', []) %}
+{%-     for protocol in protocols %}
+{%-       for service_name, service_details in firewall.get('whitelist' + suffixes[protocol], {}).items() %}
+{%-         for ip in service_details.get('ips_allow', []) %}
 iptables_{{service_name}}_allow_{{ip}}{{suffixes[protocol]}}:
   iptables.append:
     - table: filter
     - chain: INPUT
     - jump: ACCEPT
     - source: {{ ip }}
-  {%-       if protocol == ipv6 %}
+  {%-         if protocol == ipv6 %}
     - family: ipv6
-  {%-       endif %}
+  {%-         endif %}
     - save: True
+{%-         endfor %}
 {%-       endfor %}
 {%-     endfor %}
-{%-   endfor %}
+{%-   endif %}
 
 {%- else %} # Firewall is disabled by default
 firewall_disabled:

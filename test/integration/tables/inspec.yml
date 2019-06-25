@@ -1,0 +1,11 @@
+name: tables
+title: Iptables Formula
+maintainer: Saltstack-formulas org
+license: Apache-2.0
+summary: Verify that iptables is installed and configured using tables defined in pillars
+supports:
+  - os-name: debian
+  - os-name: ubuntu
+  - os-name: centos
+  - os-name: fedora
+  - os-name: opensuse
