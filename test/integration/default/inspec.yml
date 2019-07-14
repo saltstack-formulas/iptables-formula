@@ -1,11 +1,14 @@
 name: default
-title: Iptables Formula
-maintainer: Saltstack-formulas org
+title: iptables formula
+maintainer: SaltStack Formulas
 license: Apache-2.0
 summary: Verify that iptables is installed and configured correctly
 supports:
-  - os-name: debian
-  - os-name: ubuntu
-  - os-name: centos
-  - os-name: fedora
-  - os-name: opensuse
+  - platform-name: debian
+  - platform-name: ubuntu
+  - platform-name: centos
+  - platform-name: fedora
+  - platform-name: opensuse
+  - platform-name: suse
+  - platform-name: freebsd
+  - platform-name: amazon
