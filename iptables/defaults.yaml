@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
+---
 firewall:
   enabled: false
   install: false
@@ -47,4 +48,3 @@ firewall:
     POSTROUTING:
       policy: ACCEPT
       rules: {}
-

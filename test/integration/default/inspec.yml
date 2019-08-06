@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
 name: default
 title: iptables formula
 maintainer: SaltStack Formulas
