@@ -1,5 +1,17 @@
 # Changelog
 
+# [0.16.0](https://github.com/saltstack-formulas/iptables-formula/compare/v0.15.0...v0.16.0) (2019-08-10)
+
+
+### Continuous Integration
+
+* **kitchen:** add remaining platforms from `template-formula` ([0d7e08d](https://github.com/saltstack-formulas/iptables-formula/commit/0d7e08d))
+
+
+### Features
+
+* **yamllint:** include for this repo and apply rules throughout ([9721448](https://github.com/saltstack-formulas/iptables-formula/commit/9721448))
+
 # [0.15.0](https://github.com/saltstack-formulas/iptables-formula/compare/v0.14.0...v0.15.0) (2019-06-25)
 
 
