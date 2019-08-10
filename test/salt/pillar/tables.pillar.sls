@@ -1,12 +1,15 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
 # In this example we iterate over tables (filter, nat, mangle) and
-# adds the desired entries 
+# adds the desired entries
 firewall:
-  install: True
-  enabled: True
-  strict: True
+  install: true
+  enabled: true
+  strict: true
 
   # To use tables, leave services undefined and set this to true
-  use_tables: True
+  use_tables: true
 
   whitelist:
     networks:
@@ -34,9 +37,11 @@ firewall:
           dport: 2222
           jump: REJECT
 
-  #Suppport nat
+  # yamllint disable rule:line-length
+  # Suppport nat
   # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.18.0/24 -d 10.20.0.2 -j MASQUERADE
   # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.18.0/24 -d 172.31.0.2 -j MASQUERADE
+  # yamllint enable rule:line-length
   nat:
     POSTROUTING:
       rules:

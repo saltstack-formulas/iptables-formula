@@ -1,22 +1,25 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
 firewall:
-  install: True
-  enabled: True
-  strict: True
-  ipv6: True
+  install: true
+  enabled: true
+  strict: true
+  ipv6: true
   services:
     ssh:
-      block_nomatch: True
+      block_nomatch: true
       ips_allow:
         - 10.0.0.0/8
         - 172.16.0.0/12
         - 192.168.0.0/16
     http:
-      block_nomatch: False
+      block_nomatch: false
       protos:
         - udp
         - tcp
     snmp:
-      block_nomatch: False
+      block_nomatch: false
       protos:
         - udp
         - tcp
@@ -25,17 +28,17 @@ firewall:
 
   services_ipv6:
     ssh:
-      block_nomatch: False
+      block_nomatch: false
       ips_allow:
         - 2a02:2028:773:d01:10a5:f34f:e7ff:f55b/64
         - 2a02:2028:773:d01:1814:28ef:e91b:70b8/64
     http:
-      block_nomatch: False
+      block_nomatch: false
       protos:
         - udp
         - tcp
     snmp:
-      block_nomatch: False
+      block_nomatch: false
       protos:
         - udp
         - tcp
@@ -52,9 +55,11 @@ firewall:
       ips_allow:
         - 2a02:2028:773:d01:1814:28ef:e91b:70b8/64
 
-  #Support nat (ipv4 only)
+  # yamllint disable rule:line-length
+  # Support nat (ipv4 only)
   # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.18.0/24 -d 10.20.0.2 -j MASQUERADE
   # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.18.0/24 -d 172.31.0.2 -j MASQUERADE
+  # yamllint enable rule:line-length
   nat:
     eth0:
       rules:
@@ -64,14 +69,14 @@ firewall:
 ### Using the tables.sls state
 
 # In this example we iterate over tables (filter, nat, mangle) and
-# adds the desired entries 
+# adds the desired entries
 firewall:
-  install: True
-  enabled: True
-  strict: True
+  install: true
+  enabled: true
+  strict: true
 
   # To use tables, leave services undefined and set this to true
-  use_tables: True
+  use_tables: true
 
   filter:
     INPUT:
