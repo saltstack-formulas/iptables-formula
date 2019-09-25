@@ -31,6 +31,8 @@ env:
     # - INSTANCE: tables-opensuse-leap-15-develop-py3
     # - INSTANCE: default-amazonlinux-2-develop-py2
     # - INSTANCE: tables-amazonlinux-2-develop-py2
+    # - INSTANCE: default-arch-base-latest-develop-py2
+    # - INSTANCE: tables-arch-base-latest-develop-py2
     # - INSTANCE: default-debian-9-2019-2-py3
     # - INSTANCE: tables-debian-9-2019-2-py3
     - INSTANCE: default-ubuntu-1804-2019-2-py3
@@ -43,6 +45,8 @@ env:
     # - INSTANCE: tables-opensuse-leap-15-2019-2-py3
     - INSTANCE: default-amazonlinux-2-2019-2-py2
     # - INSTANCE: tables-amazonlinux-2-2019-2-py2
+    - INSTANCE: default-arch-base-latest-2019-2-py2
+    # - INSTANCE: tables-arch-base-latest-2019-2-py2
     # - INSTANCE: default-debian-9-2018-3-py2
     # - INSTANCE: tables-debian-9-2018-3-py2
     # - INSTANCE: default-ubuntu-1604-2018-3-py2
@@ -55,6 +59,8 @@ env:
     # - INSTANCE: tables-opensuse-leap-15-2018-3-py2
     # - INSTANCE: default-amazonlinux-2-2018-3-py2
     # - INSTANCE: tables-amazonlinux-2-2018-3-py2
+    # - INSTANCE: default-arch-base-latest-2018-3-py2
+    # - INSTANCE: tables-arch-base-latest-2018-3-py2
     # - INSTANCE: default-debian-8-2017-7-py2
     # - INSTANCE: tables-debian-8-2017-7-py2
     # - INSTANCE: default-ubuntu-1604-2017-7-py2
@@ -67,6 +73,8 @@ env:
     - INSTANCE: tables-opensuse-leap-15-2017-7-py2
     # - INSTANCE: default-amazonlinux-2-2017-7-py2
     # - INSTANCE: tables-amazonlinux-2-2017-7-py2
+    # - INSTANCE: default-arch-base-latest-2017-7-py2
+    # - INSTANCE: tables-arch-base-latest-2017-7-py2
 
 script:
   - bin/kitchen verify ${INSTANCE}
