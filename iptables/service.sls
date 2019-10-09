@@ -16,7 +16,7 @@
   {% set global_block_nomatch = firewall.get('block_nomatch', False) %}
 
   # Generate ipsets for all services that we have information about
-  {%- for service_name, service_details in pfirewall.get('services', {}).items() %}  
+  {%- for service_name, service_details in pfirewall.get('services', {}).items() %}
     {% set block_nomatch = service_details.get('block_nomatch', False) %}
     {% set interfaces = service_details.get('interfaces','') %}
     {% set protos = service_details.get('protos',['tcp']) %}
@@ -30,7 +30,7 @@
     {%- for ip in service_details.get('ips_allow',{}) %}
       {%- if interfaces == '' %}
         {%- for proto in protos %}
-.iptables_{{sls_params.parent}}_{{service_name}}_allow_{{ip}}_{{proto}}:
+.iptables_{{ sls_params.parent }}_{{ service_name }}_allow_{{ ip }}_{{ proto }}:
   iptables.append:
     - table: filter
     - chain: INPUT
@@ -44,7 +44,7 @@
       {%- else %}
         {%- for interface in interfaces %}
           {%- for proto in protos %}
-.iptables_{{sls_params.parent}}_{{service_name}}_allow_{{ip}}_{{proto}}_{{interface}}:
+.iptables_{{ sls_params.parent }}_{{ service_name }}_allow_{{ ip }}_{{ proto }}_{{ interface }}:
   iptables.append:
     - table: filter
     - chain: INPUT
@@ -64,7 +64,7 @@
 # If strict mode is disabled we may want to block anything else
       {%- if interfaces == '' %}
         {%- for proto in protos %}
-.iptables_{{sls_params.parent}}_{{service_name}}_deny_other_{{proto}}:
+.iptables_{{ sls_params.parent }}_{{ service_name }}_deny_other_{{ proto }}:
   iptables.append:
     - position: last
     - table: filter
@@ -76,9 +76,9 @@
     {{ comment }}
         {%- endfor %}
       {%- else %}
-        {%- for interface in interfaces%}
+        {%- for interface in interfaces %}
           {%- for proto in protos %}
-.iptables_{{sls_params.parent}}_{{service_name}}_deny_other_{{proto}}_{{interface}}:
+.iptables_{{ sls_params.parent }}_{{ service_name }}_deny_other_{{ proto }}_{{ interface }}:
   iptables.append:
     - position: last
     - table: filter
@@ -92,7 +92,7 @@
           {%- endfor %}
         {%- endfor %}
       {%- endif %}
-    {%- endif %}    
+    {%- endif %}
 
   {%- endfor %}
 {%- endif %}
