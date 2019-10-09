@@ -22,7 +22,7 @@ iptables_packages:
   pkg.installed:
     - pkgs:
 {%-     for pkg in packages %}
-      - {{pkg}}
+      - {{ pkg }}
 {%-     endfor %}
 {%-   endif %}
 
@@ -30,7 +30,7 @@ iptables_packages:
 # If the firewall is set to strict mode, we'll need to allow some
 # that always need access to anything
 {%-     for protocol in protocols %}
-iptables_allow_localhost{{suffixes[protocol]}}:
+iptables_allow_localhost{{ suffixes[protocol] }}:
   iptables.append:
     - table: filter
     - chain: INPUT
@@ -44,7 +44,7 @@ iptables_allow_localhost{{suffixes[protocol]}}:
     - save: True
 
 # Allow related/established sessions
-iptables_allow_established{{suffixes[protocol]}}:
+iptables_allow_established{{ suffixes[protocol] }}:
   iptables.append:
     - table: filter
     - chain: INPUT
@@ -57,7 +57,7 @@ iptables_allow_established{{suffixes[protocol]}}:
     - save: True
 
 # Set the policy to deny everything unless defined
-enable_reject_policy{{suffixes[protocol]}}:
+enable_reject_policy{{ suffixes[protocol] }}:
   iptables.set_policy:
     - table: filter
     - chain: INPUT
@@ -66,8 +66,8 @@ enable_reject_policy{{suffixes[protocol]}}:
     - family: ipv6
 {%-       endif %}
     - require:
-      - iptables: iptables_allow_localhost{{suffixes[protocol]}}
-      - iptables: iptables_allow_established{{suffixes[protocol]}}
+      - iptables: iptables_allow_localhost{{ suffixes[protocol] }}
+      - iptables: iptables_allow_established{{ suffixes[protocol] }}
 {%-     endfor %}
 {%-   endif %}
 
@@ -88,7 +88,7 @@ enable_reject_policy{{suffixes[protocol]}}:
 {%-         for ip in service_details.get('ips_allow', ['0.0.0.0/0']) %}
 {%-           if interfaces == '' %}
 {%-             for proto in protos %}
-iptables_{{service_name}}_allow_{{ip}}_{{proto}}{{suffixes[protocol]}}:
+iptables_{{ service_name }}_allow_{{ ip }}_{{ proto }}{{ suffixes[protocol] }}:
   iptables.insert:
     - position: 1
     - table: filter
@@ -106,7 +106,7 @@ iptables_{{service_name}}_allow_{{ip}}_{{proto}}{{suffixes[protocol]}}:
 {%-           else %}
 {%-             for interface in interfaces %}
 {%-               for proto in protos %}
-iptables_{{service_name}}_allow_{{ip}}_{{proto}}_{{interface}}{{suffixes[protocol]}}:
+iptables_{{ service_name }}_allow_{{ ip }}_{{ proto }}_{{ interface }}{{ suffixes[protocol] }}:
   iptables.insert:
     - position: 1
     - table: filter
@@ -130,7 +130,7 @@ iptables_{{service_name}}_allow_{{ip}}_{{proto}}_{{interface}}{{suffixes[protoco
 # If strict mode is disabled we may want to block anything else
 {%-           if interfaces == '' %}
 {%-             for proto in protos %}
-iptables_{{service_name}}_deny_other_{{proto}}{{suffixes[protocol]}}:
+iptables_{{ service_name }}_deny_other_{{ proto }}{{ suffixes[protocol] }}:
   iptables.append:
     - position: last
     - table: filter
@@ -147,7 +147,7 @@ iptables_{{service_name}}_deny_other_{{proto}}{{suffixes[protocol]}}:
 {%-           else %}
 {%-             for interface in interfaces %}
 {%-               for proto in protos %}
-iptables_{{service_name}}_deny_other_{{proto}}_{{interface}}{{suffixes[protocol]}}:
+iptables_{{ service_name }}_deny_other_{{ proto }}_{{ interface }}{{ suffixes[protocol] }}:
   iptables.append:
     - position: last
     - table: filter
@@ -172,7 +172,7 @@ iptables_{{service_name}}_deny_other_{{proto}}_{{interface}}{{suffixes[protocol]
 {%-     for service_name, service_details in firewall.get('nat', {}).items() %}
 {%-       for ip_s, ip_ds in service_details.get('rules', {}).items() %}
 {%-         for ip_d in ip_ds %}
-iptables_{{service_name}}_allow_{{ip_s}}_{{ip_d}}:
+iptables_{{ service_name }}_allow_{{ ip_s }}_{{ ip_d }}:
   iptables.append:
     - table: nat
     - chain: POSTROUTING
@@ -189,7 +189,7 @@ iptables_{{service_name}}_allow_{{ip_s}}_{{ip_d}}:
 {%-     for protocol in protocols %}
 {%-       for service_name, service_details in firewall.get('whitelist' + suffixes[protocol], {}).items() %}
 {%-         for ip in service_details.get('ips_allow', []) %}
-iptables_{{service_name}}_allow_{{ip}}{{suffixes[protocol]}}:
+iptables_{{ service_name }}_allow_{{ ip }}{{ suffixes[protocol] }}:
   iptables.append:
     - table: filter
     - chain: INPUT
