@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.16.1](https://github.com/saltstack-formulas/iptables-formula/compare/v0.16.0...v0.16.1) (2019-10-10)
+
+
+### Bug Fixes
+
+* **init.sls:** fix `salt-lint` errors ([](https://github.com/saltstack-formulas/iptables-formula/commit/65369c5))
+* **service.sls:** fix `salt-lint` errors ([](https://github.com/saltstack-formulas/iptables-formula/commit/49a2c62))
+
+
+### Continuous Integration
+
+* **kitchen:** change `log_level` to `debug` instead of `info` ([](https://github.com/saltstack-formulas/iptables-formula/commit/21844a9))
+* **kitchen:** install required packages to bootstrapped `opensuse` [skip ci] ([](https://github.com/saltstack-formulas/iptables-formula/commit/02b5b59))
+* **kitchen:** use bootstrapped `opensuse` images until `2019.2.2` [skip ci] ([](https://github.com/saltstack-formulas/iptables-formula/commit/79c98ed))
+* **kitchen+travis:** replace EOL pre-salted images ([](https://github.com/saltstack-formulas/iptables-formula/commit/98ee968))
+* **platform:** add `arch-base-latest` ([](https://github.com/saltstack-formulas/iptables-formula/commit/2ba3a7c))
+* **yamllint:** add rule `empty-values` & use new `yaml-files` setting ([](https://github.com/saltstack-formulas/iptables-formula/commit/8d94551))
+* merge travis matrix, add `salt-lint` & `rubocop` to `lint` job ([](https://github.com/saltstack-formulas/iptables-formula/commit/4f0c67b))
+* use `dist: bionic` & apply `opensuse-leap-15` SCP error workaround ([](https://github.com/saltstack-formulas/iptables-formula/commit/dccab80))
+
 # [0.16.0](https://github.com/saltstack-formulas/iptables-formula/compare/v0.15.0...v0.16.0) (2019-08-10)
 
 
