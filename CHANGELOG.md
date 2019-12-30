@@ -1,5 +1,44 @@
 # Changelog
 
+# [0.17.0](https://github.com/saltstack-formulas/iptables-formula/compare/v0.16.1...v0.17.0) (2019-12-30)
+
+
+### Bug Fixes
+
+* **release.config.js:** use full commit hash in commit link [skip ci] ([6467f1c](https://github.com/saltstack-formulas/iptables-formula/commit/6467f1ce0b97ca59b1d3c818815d41cf571b16ae))
+
+
+### Continuous Integration
+
+* **gemfile:** restrict `train` gem version until upstream fix [skip ci] ([2b44567](https://github.com/saltstack-formulas/iptables-formula/commit/2b4456745121de4616d8196bd1572acb78f04ea5))
+* **kitchen:** use `debian-10-master-py3` instead of `develop` [skip ci] ([eade7fb](https://github.com/saltstack-formulas/iptables-formula/commit/eade7fbe10815ad4f9795b0dc262fb5c5e1a2b91))
+* **kitchen:** use `develop` image until `master` is ready (`amazonlinux`) [skip ci] ([b9dc814](https://github.com/saltstack-formulas/iptables-formula/commit/b9dc8143688facbec3082ea379e22d87787e6bb4))
+* **kitchen+travis:** upgrade matrix after `2019.2.2` release [skip ci] ([700b8bc](https://github.com/saltstack-formulas/iptables-formula/commit/700b8bc85cfa4e44064900fc52d46a6713da9e86))
+* **travis:** apply changes from build config validation [skip ci] ([7dbd6ae](https://github.com/saltstack-formulas/iptables-formula/commit/7dbd6ae0383a4d8e53b0ed187387384eb88a1ed4))
+* **travis:** opt-in to `dpl v2` to complete build config validation [skip ci] ([1e37eec](https://github.com/saltstack-formulas/iptables-formula/commit/1e37eec9ebbbf9867fc5fd9c8d5d1ac336f0785f))
+* **travis:** quote pathspecs used with `git ls-files` [skip ci] ([28e89bb](https://github.com/saltstack-formulas/iptables-formula/commit/28e89bbe5653f81b07d2f2d72f93d4b667c95905))
+* **travis:** run `shellcheck` during lint job [skip ci] ([7378266](https://github.com/saltstack-formulas/iptables-formula/commit/73782668b6379962cb7fd2e5145dc1ca91848adb))
+* **travis:** update `salt-lint` config for `v0.0.10` [skip ci] ([aed0b09](https://github.com/saltstack-formulas/iptables-formula/commit/aed0b095b3b6054e9c157d6e9a3a6e324641904a))
+* **travis:** use `major.minor` for `semantic-release` version [skip ci] ([88abf0d](https://github.com/saltstack-formulas/iptables-formula/commit/88abf0d062e2fc2a99289a6837da3880660b3f46))
+* **travis:** use build config validation (beta) [skip ci] ([665c3b3](https://github.com/saltstack-formulas/iptables-formula/commit/665c3b3d18e504f5731ee99ba1dea13e977e7aee))
+* merge travis matrix, add `salt-lint` & `rubocop` to `lint` job ([e1bd1e6](https://github.com/saltstack-formulas/iptables-formula/commit/e1bd1e6b4f393ce91b903826fb96398877ff8ca4))
+
+
+### Documentation
+
+* **contributing:** remove to use org-level file instead [skip ci] ([d1d6aa5](https://github.com/saltstack-formulas/iptables-formula/commit/d1d6aa55555c45f27f817ca9cc62470da98e2b27))
+* **readme:** update link to `CONTRIBUTING` [skip ci] ([5f6564f](https://github.com/saltstack-formulas/iptables-formula/commit/5f6564f0543181db56c6a3d119ad4a5c98a8a40f))
+
+
+### Features
+
+* **osfamilymap.yaml:** add gentoo package name ([8027ceb](https://github.com/saltstack-formulas/iptables-formula/commit/8027ceb9715f02b12c8f328c8fefca09819522c2))
+
+
+### Performance Improvements
+
+* **travis:** improve `salt-lint` invocation [skip ci] ([d816236](https://github.com/saltstack-formulas/iptables-formula/commit/d816236d53ed3a09b53cd8af69cecdec4f8fe412))
+
 ## [0.16.1](https://github.com/saltstack-formulas/iptables-formula/compare/v0.16.0...v0.16.1) (2019-10-10)
 
 
