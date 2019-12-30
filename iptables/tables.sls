@@ -4,15 +4,16 @@
 {%- from "iptables/map.jinja" import firewall with context %}
 
 {%- for t in ['filter','nat','mangle'] %}
-  {%- for cn, cv in firewall.get(t)|dictsort %}
-    {%- set pol = cv.policy | default('ACCEPT') %}
-    {%- set rules = cv.rules | default({}) %}
-
+  {%- for cn, cv in firewall.get(t).items() %}
 chain_present_{{ t }}_{{ cn }}:
   iptables.chain_present:
     - table: {{ t }}
     - name: {{ cn }}
+  {%- endfor %}
 
+  {%- for cn, cv in firewall.get(t).items() %}
+    {%- set pol = cv.policy | default('ACCEPT') %}
+    {%- set rules = cv.rules | default({}) %}
     {%- for rn, rv in rules|dictsort %}
 rule_{{ t }}_{{ cn }}_{{ rn }}:
       {%- if rv['position'] is defined %}
@@ -22,7 +23,7 @@ rule_{{ t }}_{{ cn }}_{{ rn }}:
       {%- endif %}
     - table: {{ t }}
     - chain: {{ cn }}
-        {%- for k,v in rv|dictsort %}
+        {%- for k,v in rv.items() %}
     - {{ k }}: '{{ v }}'
         {%- endfor %}
     - save: true
