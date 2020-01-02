@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.1](https://github.com/saltstack-formulas/iptables-formula/compare/v0.17.0...v0.17.1) (2020-01-02)
+
+
+### Bug Fixes
+
+* **tables.sls:** chain and rule creation order ([80f6d5d](https://github.com/saltstack-formulas/iptables-formula/commit/80f6d5dfb2cd46b644dbdaab1f0cafd040f0ea13))
+
 # [0.17.0](https://github.com/saltstack-formulas/iptables-formula/compare/v0.16.1...v0.17.0) (2019-12-30)
 
 
