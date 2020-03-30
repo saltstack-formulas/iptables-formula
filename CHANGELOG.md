@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.17.2](https://github.com/saltstack-formulas/iptables-formula/compare/v0.17.1...v0.17.2) (2020-03-30)
+
+
+### Bug Fixes
+
+* **debian:** ensure `netbase` package is installed ([801b087](https://github.com/saltstack-formulas/iptables-formula/commit/801b0879da2771cd60e0842b611572eceb1b5f95)), closes [/travis-ci.org/github/myii/iptables-formula/jobs/665529089#L1222-L1229](https://github.com//travis-ci.org/github/myii/iptables-formula/jobs/665529089/issues/L1222-L1229)
+
+
+### Continuous Integration
+
+* **kitchen:** avoid using bootstrap for `master` instances [skip ci] ([138d5b0](https://github.com/saltstack-formulas/iptables-formula/commit/138d5b05c4fb77820515c3a6dd51dd2f79f8b68c))
+
 ## [0.17.1](https://github.com/saltstack-formulas/iptables-formula/compare/v0.17.0...v0.17.1) (2020-01-02)
 
 
