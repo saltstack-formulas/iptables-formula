@@ -5,6 +5,7 @@ Debian:
   pkgs:
     - iptables
     - iptables-persistent
+    - netbase
 Gentoo:
   pkgs:
     - net-firewall/iptables

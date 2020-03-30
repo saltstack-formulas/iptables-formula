@@ -2,7 +2,7 @@ common_packages = ['iptables']
 
 case os[:name]
 when 'debian', 'ubuntu'
-  all_packages = common_packages + ['iptables-persistent']
+  all_packages = common_packages + ['iptables-persistent', 'netbase']
 else
   all_packages = common_packages
 end
