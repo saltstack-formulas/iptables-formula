@@ -65,6 +65,7 @@ enable_reject_policy{{ suffixes[protocol] }}:
 {%-       if protocol == ipv6 %}
     - family: ipv6
 {%-       endif %}
+    - save: True
     - require:
       - iptables: iptables_allow_localhost{{ suffixes[protocol] }}
       - iptables: iptables_allow_established{{ suffixes[protocol] }}
