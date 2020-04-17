@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`0.17.3 <https://github.com/saltstack-formulas/iptables-formula/compare/v0.17.2...v0.17.3>`_ (2020-04-17)
+-------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **init:** ensure save takes place for ``enable_reject_policy`` (\ `8f3d3d1 <https://github.com/saltstack-formulas/iptables-formula/commit/8f3d3d19068d0c124efdc1c9b88412cec51ff339>`_\ )
+
 `0.17.2 <https://github.com/saltstack-formulas/iptables-formula/compare/v0.17.1...v0.17.2>`_ (2020-03-30)
 -------------------------------------------------------------------------------------------------------------
 
