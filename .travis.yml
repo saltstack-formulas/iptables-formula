@@ -81,8 +81,6 @@ jobs:
     # - env: INSTANCE=tables-opensuse-leap-151-master-py3
     # - env: INSTANCE=default-amazonlinux-2-master-py3
     # - env: INSTANCE=tables-amazonlinux-2-master-py3
-    # - env: INSTANCE=default-arch-base-latest-master-py2
-    # - env: INSTANCE=tables-arch-base-latest-master-py2
     # - env: INSTANCE=default-debian-10-2019-2-py3
     # - env: INSTANCE=tables-debian-10-2019-2-py3
     # - env: INSTANCE=default-debian-9-2019-2-py3
