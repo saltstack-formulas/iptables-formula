@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 common_packages = ['iptables']
 
 case os[:name]
 when 'debian', 'ubuntu'
-  all_packages = common_packages + ['iptables-persistent', 'netbase']
+  all_packages = common_packages + %w[iptables-persistent netbase]
 else
   all_packages = common_packages
 end
