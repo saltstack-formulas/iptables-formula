@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 ---
-name: tables
-title: iptables formula
+name: share
+title: InSpec shared resources
 maintainer: SaltStack Formulas
 license: Apache-2.0
-# yamllint disable-line rule:line-length
-summary: Verify that iptables is installed and configured using tables defined in pillars
-depends:
-  - name: share
-    path: test/integration/share
+summary: shared resources
 supports:
   - platform-name: debian
   - platform-name: ubuntu
