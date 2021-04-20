@@ -14,16 +14,16 @@ chain_present_{{ t }}_{{ cn }}:
   {%- for cn, cv in firewall.get(t).items() %}
     {%- set pol = cv.policy | default('ACCEPT') %}
     {%- set rules = cv.rules | default({}) %}
-    {%- for rn, rv in rules|dictsort %}
+    {%- for rn in rules %}
 rule_{{ t }}_{{ cn }}_{{ rn }}:
-      {%- if rv['position'] is defined %}
+      {%- if rules[rn]['position'] is defined %}
   iptables.insert:
       {%- else %}
   iptables.append:
       {%- endif %}
     - table: {{ t }}
     - chain: {{ cn }}
-        {%- for k,v in rv.items() %}
+        {%- for k,v in rules[rn].items() %}
     - {{ k }}: '{{ v }}'
         {%- endfor %}
     - save: true
