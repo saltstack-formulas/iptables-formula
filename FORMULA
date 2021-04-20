@@ -1,7 +1,7 @@
 name: iptables
 os: Debian, Ubuntu, Raspbian, RedHat, Fedora, CentOS, Suse, openSUSE
 os_family: Debian, RedHat, Suse
-version: 0.17.3
+version: 0.17.4
 release: 1
 minimum_version: 2017.7
 summary: Iptables formula

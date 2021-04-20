@@ -2,6 +2,42 @@
 Changelog
 =========
 
+`0.17.4 <https://github.com/saltstack-formulas/iptables-formula/compare/v0.17.3...v0.17.4>`_ (2021-04-20)
+-------------------------------------------------------------------------------------------------------------
+
+Code Refactoring
+^^^^^^^^^^^^^^^^
+
+
+* **tables.sls:** remove dictsort from tables.sls (\ `05a274c <https://github.com/saltstack-formulas/iptables-formula/commit/05a274c076d9f721e4617392bd109bd3f9843d6a>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **commitlint:** ensure ``upstream/master`` uses main repo URL [skip ci] (\ `b52ce7c <https://github.com/saltstack-formulas/iptables-formula/commit/b52ce7c4962d97a1717f676d391bb98e3ef32a66>`_\ )
+* **gemfile.lock:** add to repo with updated ``Gemfile`` [skip ci] (\ `451d962 <https://github.com/saltstack-formulas/iptables-formula/commit/451d96289c60fe86564879d372ddeb3440eddb6e>`_\ )
+* **gemfile+lock:** use ``ssf`` customised ``kitchen-docker`` repo [skip ci] (\ `64172a6 <https://github.com/saltstack-formulas/iptables-formula/commit/64172a6d43eabee00fb744e8c1092b2cf29c80ab>`_\ )
+* **gitlab-ci:** add ``rubocop`` linter (with ``allow_failure``\ ) [skip ci] (\ `085a5e1 <https://github.com/saltstack-formulas/iptables-formula/commit/085a5e1b96041f68b1ccf256cf6cd865097219ab>`_\ )
+* **gitlab-ci:** use GitLab CI as Travis CI replacement (\ `9296214 <https://github.com/saltstack-formulas/iptables-formula/commit/9296214f3a1ce6a33a8abc9e0d2da5545aeb10ea>`_\ )
+* **kitchen:** use ``saltimages`` Docker Hub where available [skip ci] (\ `addd5eb <https://github.com/saltstack-formulas/iptables-formula/commit/addd5eb131b226e45f57f9a9595542a294c27aeb>`_\ )
+* **kitchen+ci:** use latest pre-salted images (after CVE) [skip ci] (\ `5da8dea <https://github.com/saltstack-formulas/iptables-formula/commit/5da8dea68c0b4db3fffce9755f297c9e0d804511>`_\ )
+* **kitchen+gitlab-ci:** use latest pre-salted images [skip ci] (\ `81ef17a <https://github.com/saltstack-formulas/iptables-formula/commit/81ef17a414e2b2363a0207b62bae103e2dd0b9a2>`_\ )
+* **kitchen+travis:** remove ``master-py2-arch-base-latest`` [skip ci] (\ `50e7bdb <https://github.com/saltstack-formulas/iptables-formula/commit/50e7bdba07ac9573d60348d21beb71cc0bcbf61d>`_\ )
+* **pre-commit:** add to formula [skip ci] (\ `57e9a8d <https://github.com/saltstack-formulas/iptables-formula/commit/57e9a8dc45dec8224f5eae8426f7e5be2fea1a5a>`_\ )
+* **pre-commit:** enable/disable ``rstcheck`` as relevant [skip ci] (\ `4d88838 <https://github.com/saltstack-formulas/iptables-formula/commit/4d88838522cf72f97f3cce376006d4eec9d2d33f>`_\ )
+* **pre-commit:** finalise ``rstcheck`` configuration [skip ci] (\ `a296994 <https://github.com/saltstack-formulas/iptables-formula/commit/a296994d2b9596d724805123364871afaea0c264>`_\ )
+* **pre-commit:** update hook for ``rubocop`` [skip ci] (\ `4307f44 <https://github.com/saltstack-formulas/iptables-formula/commit/4307f44feca9779a3bdf62344f5b63e8a9b54427>`_\ )
+* **travis:** add notifications => zulip [skip ci] (\ `908960d <https://github.com/saltstack-formulas/iptables-formula/commit/908960dae8f78c3175796d5febf3b1083fbd579c>`_\ )
+* **workflows/commitlint:** add to repo [skip ci] (\ `eab93ae <https://github.com/saltstack-formulas/iptables-formula/commit/eab93ae0c6a896f77e95b00e58be87dadb5716cc>`_\ )
+
+Tests
+^^^^^
+
+
+* standardise use of ``share`` suite & ``_mapdata`` state [skip ci] (\ `5862d7a <https://github.com/saltstack-formulas/iptables-formula/commit/5862d7a9f21eda3a70627e5ea6b0c8fd5a6c3874>`_\ )
+* **rubocop:** fix all violations (or use ``disable``\ /\ ``enable``\ ) (\ `24f34a1 <https://github.com/saltstack-formulas/iptables-formula/commit/24f34a176ca038f66f3cbf7629878ba03119d561>`_\ )
+
 `0.17.3 <https://github.com/saltstack-formulas/iptables-formula/compare/v0.17.2...v0.17.3>`_ (2020-04-17)
 -------------------------------------------------------------------------------------------------------------
 
