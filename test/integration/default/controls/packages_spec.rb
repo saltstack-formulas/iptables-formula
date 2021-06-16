@@ -2,12 +2,18 @@
 
 common_packages = ['iptables']
 
-case os[:name]
-when 'debian', 'ubuntu'
-  all_packages = common_packages + %w[iptables-persistent netbase]
-else
-  all_packages = common_packages
-end
+all_packages =
+  case platform[:name]
+  when 'debian', 'ubuntu'
+    common_packages + %w[iptables-persistent netbase]
+  else
+    case system.platform[:finger]
+    when 'fedora-34'
+      ['iptables-compat']
+    else
+      common_packages
+    end
+  end
 
 control 'Packages' do
   all_packages.each do |p|

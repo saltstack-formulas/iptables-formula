@@ -6,7 +6,9 @@
 {%- set install = firewall.install %}
 {%- set strict_mode = firewall.strict %}
 {%- set global_block_nomatch = firewall.block_nomatch %}
-{%- set packages = firewall.pkgs %}
+{#- TODO: Ideally, this Fedora 34 fix should be provided from `osfingermap.yaml` but that isn't available #}
+{#-       Resolve this when the new `map.jinja` is made available for this formula #}
+{%- set packages = ['iptables-compat'] if grains.get('osfinger', '') == 'Fedora-34' else firewall.pkgs %}
 {%- set ipv4 = 'IPv4' %}
 {%- set ipv6 = 'IPv6' %}
 {%- set protocols = [ipv4] %}
