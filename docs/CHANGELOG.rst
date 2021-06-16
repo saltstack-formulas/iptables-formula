@@ -2,6 +2,22 @@
 Changelog
 =========
 
+`0.17.5 <https://github.com/saltstack-formulas/iptables-formula/compare/v0.17.4...v0.17.5>`_ (2021-06-16)
+-------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **fedora-34:** use ``iptables-compat`` package for installation (\ `650c318 <https://github.com/saltstack-formulas/iptables-formula/commit/650c318a0abd89bf6ae4f069b2d8eeb07acdc0ac>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* add ``arch-master`` to matrix and update ``.travis.yml`` [skip ci] (\ `acf6c32 <https://github.com/saltstack-formulas/iptables-formula/commit/acf6c327bb370e89ab53c65832245b438764f5ca>`_\ )
+* **kitchen+gitlab:** adjust matrix to add ``3003`` [skip ci] (\ `3bd21d7 <https://github.com/saltstack-formulas/iptables-formula/commit/3bd21d764bf8ed639661f997feee486725cedb6d>`_\ )
+
 `0.17.4 <https://github.com/saltstack-formulas/iptables-formula/compare/v0.17.3...v0.17.4>`_ (2021-04-20)
 -------------------------------------------------------------------------------------------------------------
 
