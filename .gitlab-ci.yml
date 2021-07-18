@@ -123,6 +123,7 @@ rubocop:
 ## Define the rest of the matrix based on Kitchen testing
 # Make sure the instances listed below match up with
 # the `platforms` defined in `kitchen.yml`
+# default-debian-11-tiamat-py3: {extends: '.test_instance'}
 # default-debian-10-tiamat-py3: {extends: '.test_instance'}
 # default-debian-9-tiamat-py3: {extends: '.test_instance'}
 # default-ubuntu-2004-tiamat-py3: {extends: '.test_instance'}
@@ -134,6 +135,9 @@ rubocop:
 # default-oraclelinux-7-tiamat-py3: {extends: '.test_instance'}
 # default-almalinux-8-tiamat-py3: {extends: '.test_instance'}
 # default-rockylinux-8-tiamat-py3: {extends: '.test_instance'}
+default-debian-11-master-py3: {extends: '.test_instance'}
+# tables-debian-11-master-py3: {extends: '.test_instance'}
+# debian-11-master-py3: {extends: '.test_instance'}
 default-debian-10-master-py3: {extends: '.test_instance'}
 # tables-debian-10-master-py3: {extends: '.test_instance'}
 # debian-10-master-py3: {extends: '.test_instance'}
@@ -191,6 +195,7 @@ default-almalinux-8-master-py3: {extends: '.test_instance'}
 default-rockylinux-8-master-py3: {extends: '.test_instance'}
 # tables-rockylinux-8-master-py3: {extends: '.test_instance'}
 # rockylinux-8-master-py3: {extends: '.test_instance'}
+# default-debian-11-3003-1-py3: {extends: '.test_instance'}
 # default-debian-10-3003-1-py3: {extends: '.test_instance'}
 # default-debian-9-3003-1-py3: {extends: '.test_instance'}
 # default-ubuntu-2004-3003-1-py3: {extends: '.test_instance'}
@@ -208,6 +213,7 @@ default-rockylinux-8-master-py3: {extends: '.test_instance'}
 # default-arch-base-latest-3003-1-py3: {extends: '.test_instance'}
 # default-gentoo-stage3-latest-3003-1-py3: {extends: '.test_instance'}
 # default-gentoo-stage3-systemd-3003-1-py3: {extends: '.test_instance'}
+# default-debian-11-3002-6-py3: {extends: '.test_instance'}
 # default-debian-10-3002-6-py3: {extends: '.test_instance'}
 # default-debian-9-3002-6-py3: {extends: '.test_instance'}
 # default-ubuntu-2004-3002-6-py3: {extends: '.test_instance'}
