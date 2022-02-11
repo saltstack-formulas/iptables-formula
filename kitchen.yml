@@ -344,7 +344,7 @@ suites:
             '*':
               - iptables
       pillars_from_files:
-        iptables.sls: test/salt/pillar/default.pillar.sls
+        iptables.sls: test/salt/pillar/default.sls
     verifier:
       inspec_tests:
         - path: test/integration/default
@@ -362,7 +362,7 @@ suites:
             '*':
               - iptables
       pillars_from_files:
-        iptables.sls: test/salt/pillar/tables.pillar.sls
+        iptables.sls: test/salt/pillar/tables.sls
     verifier:
       inspec_tests:
         - path: test/integration/tables
